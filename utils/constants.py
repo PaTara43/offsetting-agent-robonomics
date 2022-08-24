@@ -1,16 +1,16 @@
 IPCI_TYPE_REGISTRY = {
-   "types":{
-      "AccountInfo":"AccountInfoWithRefCount",
-      "Address":"AccountId",
-      "LookupSource":"AccountId",
-      "RefCount":"u8",
-      "Record":"Vec<u8>",
-      "TechnicalParam":"Vec<u8>",
-      "TechnicalReport":"Vec<u8>",
-      "EconomicalParam":"{}",
-      "ProofParam":"MultiSignature",
-      "LiabilityIndex":"u64"
-   }
+    "types": {
+        "AccountInfo": "AccountInfoWithRefCount",
+        "Address": "AccountId",
+        "LookupSource": "AccountId",
+        "RefCount": "u8",
+        "Record": "Vec<u8>",
+        "TechnicalParam": "Vec<u8>",
+        "TechnicalReport": "Vec<u8>",
+        "EconomicalParam": "{}",
+        "ProofParam": "MultiSignature",
+        "LiabilityIndex": "u64",
+    }
 }
 IPCI_SS58_ADDRESS_TYPE = 32
 IPCI_REMOTE_WS = "wss://ipci.frontier.rpc.robonomics.network"

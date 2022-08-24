@@ -3,11 +3,7 @@ import traceback
 
 from logging import getLogger
 
-from utils import (
-    subscribe,
-    parse_income_message,
-    create_liability,
-    LIABILITY_TOPIC)
+from utils import subscribe, parse_income_message, create_liability, LIABILITY_TOPIC
 
 logger = getLogger(__name__)
 
@@ -27,15 +23,17 @@ def callback_liability(obj, update_nr, subscription_id):
 
     try:
 
-        income_data = parse_income_message(obj['params']['result']['data'])
+        income_data = parse_income_message(obj["params"]["result"]["data"])
         logger.info(f"Got request for burning carbon assets: {income_data}")
         logger.info(f"Creating liability...")
-        index, tr_hash = create_liability(seed=seed,
-                                          technics=income_data["technics"],
-                                          economics=income_data["economics"],
-                                          promisee=income_data["promisee"],
-                                          promisee_signature=income_data["promisee_signature"])
-        logger.info(f"Liability {index} created at {tr_hash}")
+        index, tr_hash = create_liability(
+            seed=seed,
+            technics=income_data["technics"],
+            economics=income_data["economics"],
+            promisee=income_data["promisee"],
+            promisee_signature=income_data["promisee_signature"],
+        )
+        logger.info(f"Liability {index} created at {tr_hash}.")
 
     except Exception:
         logger.error(f"Failed process DApp query: {traceback.format_exc()}")
@@ -50,5 +48,5 @@ def main():
     liability_manager = subscribe(topic=LIABILITY_TOPIC, callback=callback_liability)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -12,7 +12,7 @@ from utils import (
     get_last_burn_date,
     get_kwt_to_burn,
     NEGOTIATOR_TOPIC,
-    )
+)
 
 logger = getLogger(__name__)
 
@@ -32,7 +32,7 @@ def callback_negotiations(obj, update_nr, subscription_id):
 
     try:
 
-        income_data = parse_income_message(obj['params']['result']['data'])
+        income_data = parse_income_message(obj["params"]["result"]["data"])
         logger.info(f"Got request for last burn date and N assets to be burnt: {income_data}")
         last_burn_date: date = get_last_burn_date(income_data["address"])
         kwt_to_burn: float = get_kwt_to_burn(income_data["address"], income_data["n_current"])
@@ -53,5 +53,6 @@ def main():
 
     negotiator = subscribe(topic=NEGOTIATOR_TOPIC, callback=callback_negotiations)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
