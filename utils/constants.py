@@ -21,3 +21,8 @@ PUBSUB_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"
 NEGOTIATOR_TOPIC = "negotiations"
 LIABILITY_TOPIC = "liability"
 SQLITE_DB_PATH = path.join(path.abspath(path.dirname(__file__)), "..", "db", "burns.db")
+COAL_SHARE_TABLE_PATH = path.join(path.abspath(path.dirname(__file__)),
+                                  "..",
+                                  "coal_share",
+                                  "share-electricity-coal-01-09-2022_cropped.csv"
+                                  )

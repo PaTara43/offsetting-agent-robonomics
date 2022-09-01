@@ -1,3 +1,8 @@
+"""
+Create a small DB to host burns history.
+
+"""
+
 import sqlite3
 
 from logging import getLogger

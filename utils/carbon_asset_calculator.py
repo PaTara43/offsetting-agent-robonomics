@@ -1,3 +1,8 @@
+"""
+Perform various carbon asset burning process calculations.
+
+"""
+
 import typing as tp
 
 from logging import getLogger
@@ -9,6 +14,14 @@ logger = getLogger(__name__)
 
 
 def get_last_burn_date(address: str) -> tp.Optional[date]:
+    """
+    Get the date of a last token burn for an account.
+
+    :param address: Account to check.
+
+    :return: Date of last burn. None if no burns.
+
+    """
 
     logger.info(f"SQL query to get LastBurnDate for address '{address}'")
     response: list = sql_query(f"SELECT LastBurnDate from Burns where Address = '{address}'")
@@ -24,6 +37,15 @@ def get_last_burn_date(address: str) -> tp.Optional[date]:
 
 
 def get_kwt_to_burn(address: str, kwt_current: float) -> float:
+    """
+    Get a number of kWt*h to burn given the record of burns.
+
+    :param address: Account to check.
+    :param kwt_current: Current account kWt*h amount.
+
+    :return: Number of kWt*h to burn this time.
+
+    """
 
     logger.info(f"SQL query to get TotalBurnt amount for address '{address}'")
     response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
@@ -36,6 +58,15 @@ def get_kwt_to_burn(address: str, kwt_current: float) -> float:
 
 
 def get_tokens_to_burn(kwt: float, geo: str) -> float:
+    """
+    Get an amount of carbon assets to burn based on a number of kWt*h burnt and country of residence.
+
+    :param kwt:
+    :param geo:
+
+    :return:
+
+    """
 
 
     return kwt

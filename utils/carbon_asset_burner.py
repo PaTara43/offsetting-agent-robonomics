@@ -1,3 +1,8 @@
+"""
+This file contains functions to burn carbon assets in IPCI network and update burns history in local DB.
+
+"""
+
 from datetime import date
 from logging import getLogger
 from scalecodec.types import GenericCall, GenericExtrinsic
@@ -7,7 +12,6 @@ from db_interaction import sql_query
 from constants import CARBON_ASSET_ID, IPCI_REMOTE_WS, IPCI_TYPE_REGISTRY, IPCI_SS58_ADDRESS_TYPE
 
 logger = getLogger(__name__)
-
 
 
 def create_instance() -> SubstrateInterface:
@@ -70,7 +74,15 @@ def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
     return receipt.extrinsic_hash
 
 
-def add_burn_record(address: str, date_: date, kwt_burnt: float) -> None:
+def add_burn_record(address: str, date_: date, kwt_burnt: float):
+    """
+    Update DB record of committed burns.
+
+    :param address: Liability promisee address.
+    :param date_: Date when the tokens was burnt.
+    :param kwt_burnt: How much kWt*h were burnt.
+
+    """
 
     logger.info(f"Adding new burn record to the table.")
 
