@@ -32,6 +32,7 @@ def create_liability(
         promisee_signature_crypto_type=KeypairType.ED25519,
     )
 
+
 def report_liability(report_content: dict) -> str:
 
     return "abc"

@@ -5,12 +5,12 @@ from ast import literal_eval
 from logging import getLogger
 from robonomicsinterface import Account, PubSub
 
-from utils import PUBSUB_LISTEN_MULTIADDR
+from constants import PUBSUB_LISTEN_MULTIADDR
 
 logger = getLogger(__name__)
 
 
-def subscribe(topic: str, callback: callable):
+def pubsub_subscribe(topic: str, callback: callable):
     """
     Subscribe to a specified topic with a specified callback
 
@@ -43,7 +43,7 @@ def parse_income_message(rawdata: tp.List[tp.Any]) -> dict:
     return data_dict
 
 
-def send(data: tp.Any, topic: str):
+def pubsub_send(data: tp.Any, topic: str):
     """
     Send data to a topic via PubSub
 

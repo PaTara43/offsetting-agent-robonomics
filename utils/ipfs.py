@@ -1,10 +1,8 @@
-
-
-def get_data(cid: str) -> dict:
+def ipfs_get_data(cid: str) -> dict:
 
     return {"a": "abc", "b": "cba"}
 
 
-def upload_dict(content: dict) -> str:
+def ipfs_upload_data(content: dict) -> str:
 
     return "ipfs_cid"

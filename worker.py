@@ -1,10 +1,11 @@
 import os
 import traceback
+import typing as tp
 
 from logging import getLogger
-from robonomicsinterface import Account, Subscriber, SubEvent
+from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash
 
-from utils import burn_carbon_asset, report_liability
+from utils import burn_carbon_asset, ipfs_get_data, get_tokens_to_burn, report_liability
 
 logger = getLogger(__name__)
 
@@ -25,8 +26,14 @@ def callback_new_liability(data):
         try:
 
             logger.info(f"New liability for the agent: {data}")
-            logger.info(f"Burning tokens...")
-            tr_hash: str = burn_carbon_asset(seed=seed, technics=data[1]["hash"])
+
+            cid: str = ipfs_32_bytes_to_qm_hash(data[1]["hash"])
+            technics: tp.Dict[str, tp.Union[float, str]] = ipfs_get_data(cid)
+            tokens_to_burn: float = get_tokens_to_burn(technics["kwt"], technics["geo"])
+
+            logger.info(f"Burning tokens {tokens_to_burn}...")
+
+            tr_hash: str = burn_carbon_asset(seed=seed, tokens_to_burn=tokens_to_burn)
             logger.info(f"Reporting burn {tr_hash}")
             report_tr_hash: str = report_liability(dict(burn_transaction_hash=tr_hash))
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")

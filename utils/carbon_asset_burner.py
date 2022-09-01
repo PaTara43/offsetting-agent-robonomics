@@ -1,23 +1,25 @@
-import typing as tp
-
+from datetime import date
+from logging import getLogger
 from scalecodec.types import GenericCall, GenericExtrinsic
 from substrateinterface import SubstrateInterface, Keypair, ExtrinsicReceipt
 
-from .constants import CARBON_ASSET_ID, IPCI_REMOTE_WS, IPCI_TYPE_REGISTRY, IPCI_SS58_ADDRESS_TYPE
+from db_interaction import sql_query
+from constants import CARBON_ASSET_ID, IPCI_REMOTE_WS, IPCI_TYPE_REGISTRY, IPCI_SS58_ADDRESS_TYPE
+
+logger = getLogger(__name__)
 
 
-def create_instance(endpoint: str) -> SubstrateInterface:
+
+def create_instance() -> SubstrateInterface:
     """
     Create on IPCI Substrate instance.
-
-    :param endpoint: Parachain endpoint.
 
     :return: IPCI Substrate instance.
 
     """
 
     interface: SubstrateInterface = SubstrateInterface(
-        url=endpoint,
+        url=IPCI_REMOTE_WS,
         ss58_format=IPCI_SS58_ADDRESS_TYPE,
         type_registry_preset="substrate-node-template",
         type_registry=IPCI_TYPE_REGISTRY,
@@ -42,27 +44,42 @@ def create_keypair(seed: str) -> Keypair:
         return Keypair.create_from_mnemonic(seed, ss58_format=IPCI_SS58_ADDRESS_TYPE)
 
 
-def burn_carbon_asset(seed: str, technics: str) -> str:
+def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
     """
     Burn carbon assets in IPCS Substrate network.
 
     :param seed: Offsetting agent account seed in any form.
-    :param technics: Technics from liability to be parsed and executed.
+    :param tokens_to_burn: Number of tokens to burn.
 
-    :return: transaction hash, block_num-event_idx.
+    :return: transaction hash.
 
     """
 
-    keypair = create_keypair(seed)
-    interface: SubstrateInterface = create_instance(endpoint)
+    keypair: Keypair = create_keypair(seed)
+    interface: SubstrateInterface = create_instance()
 
     call: GenericCall = interface.compose_call(
         call_module="CarbonAsset",
         call_function="burn",
-        call_params=dict(id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=amount),
+        call_params=dict(id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=tokens_to_burn),
     )
 
     signed_extrinsic: GenericExtrinsic = interface.create_signed_extrinsic(call=call, keypair=keypair)
     receipt: ExtrinsicReceipt = interface.submit_extrinsic(signed_extrinsic, wait_for_finalization=True)
 
     return receipt.extrinsic_hash
+
+
+def add_burn_record(address: str, date_: date, kwt_burnt: float) -> None:
+
+    logger.info(f"Adding new burn record to the table.")
+
+    response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
+    if not response:
+        logger.info("Adding new address to burns history.")
+        sql_query(f"INSERT INTO Burns VALUES ('{address}', '{date_}', {kwt_burnt})")
+    else:
+        logger.info(f"Adding new data to the existing address {address}.")
+        sql_query(f"DELETE FROM Burns WHERE Address='{address}'")
+        sql_query(f"INSERT INTO Burns (Address, LastBurnDate, TotalBurnt) VALUES ('{address}', '{date_}', "
+                  f"'{response[0][0]+kwt_burnt}')")
