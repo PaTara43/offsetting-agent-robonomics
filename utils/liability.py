@@ -1,7 +1,14 @@
+"""
+Tool for creating and reporting liabilities in Robonomics Network.
+
+"""
+
 import typing as tp
 
 from robonomicsinterface import Account, Liability
 from substrateinterface import KeypairType
+
+from ipfs_utils import ipfs_upload_dict
 
 
 def create_liability(
@@ -33,6 +40,21 @@ def create_liability(
     )
 
 
-def report_liability(report_content: dict) -> str:
+def report_liability(seed: str, index: int, report_content: dict) -> str:
+    """
+    Finalize and report liability when job is done.
 
-    return "abc"
+    :param seed: Agent seed.
+    :param index: Liability index.
+    :param report_content: Report content to pass to report as IPFS hash.
+
+    :return: Finalization transaction hash.
+
+    """
+
+    account = Account(seed=seed)
+    liability_manager = Liability(account)
+
+    report_content_cid = ipfs_upload_dict(seed=seed, content=report_content)
+
+    return liability_manager.finalize(index=index, report_hash=report_content_cid)

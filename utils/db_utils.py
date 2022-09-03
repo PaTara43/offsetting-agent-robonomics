@@ -1,3 +1,8 @@
+"""
+SQL DB interaction via SQLite.
+
+"""
+
 import sqlite3
 import typing as tp
 
@@ -12,7 +17,7 @@ def sql_query(query: str) -> tp.Any:
     """
     Perform a provided SQL query to the local DB.
 
-    :param query: SQL query to perform.
+    :param query: SQL command to perform.
 
     :return: Query result.
 
@@ -33,6 +38,6 @@ def sql_query(query: str) -> tp.Any:
 
         return result
     finally:
-        if (sqlite_connection):
+        if sqlite_connection:
             sqlite_connection.close()
             logger.info("Closed SQL DB connection")

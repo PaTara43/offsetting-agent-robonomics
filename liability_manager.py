@@ -46,6 +46,7 @@ def main():
 
     """
 
+    logger.info("Starting liability_manager... Waiting for incoming messages.")
     liability_manager = pubsub_subscribe(topic=LIABILITY_TOPIC, callback=callback_liability)
 
 

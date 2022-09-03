@@ -1,3 +1,8 @@
+"""
+Constants list.
+
+"""
+
 from os import path
 
 IPCI_TYPE_REGISTRY = {

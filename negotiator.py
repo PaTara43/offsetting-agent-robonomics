@@ -52,6 +52,7 @@ def main():
 
     """
 
+    logger.info("Starting negotiator... Waiting for incoming messages.")
     negotiator = pubsub_subscribe(topic=NEGOTIATOR_TOPIC, callback=callback_negotiations)
 
 

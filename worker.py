@@ -35,7 +35,7 @@ def callback_new_liability(data):
 
             tr_hash: str = burn_carbon_asset(seed=seed, tokens_to_burn=tokens_to_burn)
             logger.info(f"Reporting burn {tr_hash}")
-            report_tr_hash: str = report_liability(dict(burn_transaction_hash=tr_hash))
+            report_tr_hash: str = report_liability(seed=seed, index=data[0], report_content=dict(burn_transaction_hash=tr_hash))
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")
 
         except Exception:
@@ -48,6 +48,7 @@ def main():
 
     """
 
+    logger.info("Starting liability subscriber... Waiting for incoming liabilities.")
     liability_subscription = Subscriber(
         account=worker_account, subscribed_event=SubEvent.NewLiability, subscription_handler=callback_new_liability
     )
