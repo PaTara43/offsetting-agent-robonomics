@@ -40,12 +40,12 @@ def get_last_burn_date(address: str) -> tp.Optional[date]:
         return date_
 
 
-def get_kwt_to_burn(address: str, kwt_current: float) -> float:
+def get_kwh_to_burn(address: str, kwh_current: float) -> float:
     """
     Get a number of kWt*h to burn given the record of burns.
 
     :param address: Account to check.
-    :param kwt_current: Current account kWt*h
+    :param kwh_current: Current account kWt*h
 
 if __name__ == '__main__':
 
@@ -60,13 +60,13 @@ if __name__ == '__main__':
     response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
     if not response:
         logger.info(f"No burns were made for {address}.")
-        return kwt_current
+        return kwh_current
     else:
-        logger.info(f"kWt totally burnt: {response[0][0]}")
-        return kwt_current - response[0][0]
+        logger.info(f"kWt*h totally burnt: {response[0][0]}")
+        return kwh_current - response[0][0]
 
 
-def get_tokens_to_burn(kwt: float, geo: str) -> float:
+def get_tokens_to_burn(kwh: float, geo: str) -> float:
     """
     Get an amount of carbon assets to burn based on a number of kWt*h burnt and country of residence.
         Source:
@@ -78,7 +78,7 @@ def get_tokens_to_burn(kwt: float, geo: str) -> float:
         THE TYPE OF COAL USED. ALSO, THE STATISTICS DATA MAY BE INCORRECT/OUTDATED. THEREFORE, DO NOT TREAT THIS AS
         A SCIENTIFIC RESEARCH.
 
-    :param kwt: Number of kWt*h to compensate.
+    :param kwh: Number of kWt*h to compensate.
     :param geo: Coordinates of the household.
 
     :return: Number of carbon assets to burn.
@@ -105,10 +105,10 @@ def get_tokens_to_burn(kwt: float, geo: str) -> float:
     else:
         logger.info(f"No country was determined. Using global coefficient: {WORLD_COAL_SHARE_COEFFICIENT}.")
 
-    kwt_coal: float = kwt * coal_share_coefficient / 100
-    logger.info(f"Number of coal-powered kWt*h burnt: {kwt_coal}")
+    kwh_coal: float = kwh * coal_share_coefficient / 100
+    logger.info(f"Number of coal-powered kWt*h burnt: {kwh_coal}")
 
-    short_tons_coal: float = kwt_coal * 1.12 / 2000  # 1.12 pounds of coal per kWh, 2000 pounds in short tonn.
+    short_tons_coal: float = kwh_coal * 1.12 / 2000  # 1.12 pounds of coal per kWh, 2000 pounds in short tonn.
     short_tons_co2: float = short_tons_coal * 2.86  # 2.86 short tons of CO2 per short tonn of coal avg.
     metric_tons_co2: float = short_tons_co2 / 1.1023
 

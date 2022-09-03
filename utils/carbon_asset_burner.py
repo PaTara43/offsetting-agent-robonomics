@@ -41,13 +41,13 @@ def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
     return receipt.extrinsic_hash
 
 
-def add_burn_record(address: str, date_: date, kwt_burnt: float):
+def add_burn_record(address: str, date_: date, kwh_burnt: float):
     """
     Update DB record of committed burns.
 
     :param address: Liability promisee address.
     :param date_: Date when the tokens was burnt.
-    :param kwt_burnt: How much kWt*h were burnt.
+    :param kwh_burnt: How much kWt*h were burnt.
 
     """
 
@@ -56,11 +56,11 @@ def add_burn_record(address: str, date_: date, kwt_burnt: float):
     response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
     if not response:
         logger.info("Adding new address to burns history.")
-        sql_query(f"INSERT INTO Burns VALUES ('{address}', '{date_}', {kwt_burnt})")
+        sql_query(f"INSERT INTO Burns VALUES ('{address}', '{date_}', {kwh_burnt})")
     else:
         logger.info(f"Adding new data to the existing address {address}.")
         sql_query(f"DELETE FROM Burns WHERE Address='{address}'")
         sql_query(
             f"INSERT INTO Burns (Address, LastBurnDate, TotalBurnt) VALUES ('{address}', '{date_}', "
-            f"'{response[0][0]+kwt_burnt}')"
+            f"'{response[0][0] + kwh_burnt}')"
         )

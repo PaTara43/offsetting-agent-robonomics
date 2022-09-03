@@ -11,7 +11,7 @@ from utils import (
     parse_income_message,
     pubsub_send,
     get_last_burn_date,
-    get_kwt_to_burn,
+    get_kwh_to_burn,
     NEGOTIATOR_TOPIC,
 )
 
@@ -36,10 +36,10 @@ def callback_negotiations(obj, update_nr, subscription_id):
         income_data: tp.Dict[str, tp.Union[str, float]] = parse_income_message(obj["params"]["result"]["data"])
         logger.info(f"Got request for last burn date and N assets to be burnt: {income_data}")
         last_burn_date: tp.Optional[date] = get_last_burn_date(income_data["address"])
-        kwt_to_burn: float = get_kwt_to_burn(income_data["address"], income_data["kwt_current"])
+        kwh_to_burn: float = get_kwh_to_burn(income_data["address"], income_data["kwh_current"])
 
         logger.info("Sending response to the DApp")
-        outcome_data: str = json.dumps(dict(last_burn_date=last_burn_date, kwt_to_burn=kwt_to_burn))
+        outcome_data: str = json.dumps(dict(last_burn_date=last_burn_date, kwh_to_burn=kwh_to_burn))
         pubsub_send(outcome_data, NEGOTIATOR_TOPIC)
 
     except Exception:

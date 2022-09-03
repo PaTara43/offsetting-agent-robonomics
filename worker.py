@@ -29,7 +29,7 @@ def callback_new_liability(data):
 
             cid: str = ipfs_32_bytes_to_qm_hash(data[1]["hash"])
             technics: tp.Dict[str, tp.Union[float, str]] = ipfs_get_data(cid)
-            tokens_to_burn: float = get_tokens_to_burn(technics["kwt"], technics["geo"])
+            tokens_to_burn: float = get_tokens_to_burn(technics["kwh"], technics["geo"])
 
             logger.info(f"Burning tokens {tokens_to_burn}...")
 
