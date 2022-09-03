@@ -1,5 +1,5 @@
 """
-Crop table to reduce previous years. Source for table: https://ourworldindata.org/grapher/share-electricity-coal.
+Crop table to reduce previous years.
 
 """
 
