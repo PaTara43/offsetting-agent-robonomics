@@ -4,6 +4,7 @@ Perform various carbon asset burning process calculations.
 """
 
 import csv
+import logging
 import typing as tp
 
 from datetime import date
@@ -44,7 +45,12 @@ def get_kwt_to_burn(address: str, kwt_current: float) -> float:
     Get a number of kWt*h to burn given the record of burns.
 
     :param address: Account to check.
-    :param kwt_current: Current account kWt*h amount.
+    :param kwt_current: Current account kWt*h
+
+if __name__ == '__main__':
+
+    logging.basicConfig(level=logging.INFO)
+    print(get_tokens_to_burn(12.0, "59.848988, 29.240407")) amount.
 
     :return: Number of kWt*h to burn this time.
 
@@ -65,6 +71,12 @@ def get_tokens_to_burn(kwt: float, geo: str) -> float:
     Get an amount of carbon assets to burn based on a number of kWt*h burnt and country of residence.
         Source:
         - Coal Share by countries: https://ourworldindata.org/grapher/share-electricity-coal.
+        - kWh per ton of coal: https://www.eia.gov/tools/faqs/faq.php?id=667&t=2
+        - CO2 per ton of coal: https://www.eia.gov/coal/production/quarterly/co2_article/co2.html
+
+        DISCLAIMER: THIS IS NOT INTENDED TO BE A COMPLETELY ACCURATE CALCULATION. THE FINAL RESULT HEAVILY DEPENDS ON
+        THE TYPE OF COAL USED. ALSO, THE STATISTICS DATA MAY BE INCORRECT/OUTDATED. THEREFORE, DO NOT TREAT THIS AS
+        A SCIENTIFIC RESEARCH.
 
     :param kwt: Number of kWt*h to compensate.
     :param geo: Coordinates of the household.
@@ -96,4 +108,10 @@ def get_tokens_to_burn(kwt: float, geo: str) -> float:
     kwt_coal: float = kwt * coal_share_coefficient / 100
     logger.info(f"Number of coal-powered kWt*h burnt: {kwt_coal}")
 
-    return kwt_coal
+    short_tons_coal: float = kwt_coal * 1.12 / 2000  # 1.12 pounds of coal per kWh, 2000 pounds in short tonn.
+    short_tons_co2: float = short_tons_coal * 2.86  # 2.86 short tons of CO2 per short tonn of coal avg.
+    metric_tons_co2: float = short_tons_co2 / 1.1023
+
+    logger.info(f"Number of metric tons of CO2 / Carbon assets to burn: {metric_tons_co2}.")
+
+    return metric_tons_co2  # 1 Carbon asset per metric tonn of co2
