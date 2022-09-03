@@ -24,9 +24,7 @@ def ipfs_get_data(cid: str) -> dict:
 
     """
 
-    response = requests.get(
-        W3GW+"/ipfs/"+cid
-    )
+    response = requests.get(W3GW + "/ipfs/" + cid)
     return literal_eval(response.content.decode("utf-8"))
 
 
@@ -43,10 +41,10 @@ def ipfs_upload_dict(seed: str, content: dict) -> str:
     """
 
     keypair: Keypair = create_keypair(seed)
-    content_bytes = json.dumps(content).encode('utf-8')
+    content_bytes = json.dumps(content).encode("utf-8")
 
     response = requests.post(
-        W3GW+"/api/v0/add",
+        W3GW + "/api/v0/add",
         auth=(f"sub-{keypair.ss58_address}", f"0x{keypair.sign(keypair.ss58_address).hex()}"),
         files={"file@": (None, content_bytes)},
     )
@@ -75,7 +73,7 @@ def _pin_file(keypair: Keypair, ipfs_cid: str) -> bool:
     body = {"cid": ipfs_cid}
 
     response = requests.post(
-        W3PS+"/psa/pins",
+        W3PS + "/psa/pins",
         auth=(f"sub-{keypair.ss58_address}", f"0x{keypair.sign(keypair.ss58_address).hex()}"),
         json=body,
     )

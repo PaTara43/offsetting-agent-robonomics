@@ -78,11 +78,11 @@ def get_tokens_to_burn(kwt: float, geo: str) -> float:
     geolocator = Nominatim(user_agent="geoapiExercises")
     location = geolocator.reverse(geo, language="en")
     if location:
-        country: str = location.raw['address']["country"]
+        country: str = location.raw["address"]["country"]
         logger.info(f"Country based on geo: {country}.")
 
         logger.info(f"Getting coal share coefficient for {country}.")
-        with open(COAL_SHARE_TABLE_PATH, 'r') as coal_share:
+        with open(COAL_SHARE_TABLE_PATH, "r") as coal_share:
             coal_share_csv = csv.reader(coal_share)
             for row in coal_share_csv:
                 if row[0] == country:
@@ -93,7 +93,7 @@ def get_tokens_to_burn(kwt: float, geo: str) -> float:
     else:
         logger.info(f"No country was determined. Using global coefficient: {WORLD_COAL_SHARE_COEFFICIENT}.")
 
-    kwt_coal: float = kwt*coal_share_coefficient/100
+    kwt_coal: float = kwt * coal_share_coefficient / 100
     logger.info(f"Number of coal-powered kWt*h burnt: {kwt_coal}")
 
     return kwt_coal

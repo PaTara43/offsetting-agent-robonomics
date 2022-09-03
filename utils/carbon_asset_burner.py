@@ -60,5 +60,7 @@ def add_burn_record(address: str, date_: date, kwt_burnt: float):
     else:
         logger.info(f"Adding new data to the existing address {address}.")
         sql_query(f"DELETE FROM Burns WHERE Address='{address}'")
-        sql_query(f"INSERT INTO Burns (Address, LastBurnDate, TotalBurnt) VALUES ('{address}', '{date_}', "
-                  f"'{response[0][0]+kwt_burnt}')")
+        sql_query(
+            f"INSERT INTO Burns (Address, LastBurnDate, TotalBurnt) VALUES ('{address}', '{date_}', "
+            f"'{response[0][0]+kwt_burnt}')"
+        )
