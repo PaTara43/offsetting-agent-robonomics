@@ -4,6 +4,7 @@ Perform various carbon asset burning process calculations.
 """
 
 import csv
+import logging
 import typing as tp
 
 from datetime import date
@@ -99,6 +100,6 @@ def get_tokens_to_burn(kwh: float, geo: str) -> float:
 
     tons_co2 = kwh * co2_intensity / 10**6  # Table show how many grams of CO2 produced per kWh generated in country.
 
-    logger.info(f"Number of metric tons of CO2 / Carbon assets to burn: {tons_co2}.")
+    logger.info(f"Number of metric tons of CO2 / Carbon assets to burn for {kwh} kWh: {tons_co2}.")
 
     return tons_co2  # 1 Carbon asset per metric tonn of co2

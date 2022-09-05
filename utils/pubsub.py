@@ -5,7 +5,7 @@ from ast import literal_eval
 from logging import getLogger
 from robonomicsinterface import Account, PubSub
 
-from constants import PUBSUB_LISTEN_MULTIADDR
+from constants import AGENT_LISTEN_MULTIADDR, AGENT_NODE_REMOTE_WS, DAPP_PUBLISH_MULTIADDR, DAPP_NODE_REMOTE_WS
 
 logger = getLogger(__name__)
 
@@ -17,10 +17,10 @@ def pubsub_subscribe(topic: str, callback: callable):
     :param topic: Topic to subscribe to.
     :param callback: Callback to execute
     """
-    account = Account()
+    account = Account(remote_ws=AGENT_NODE_REMOTE_WS)
     pubsub = PubSub(account)
 
-    pubsub.listen(PUBSUB_LISTEN_MULTIADDR)
+    pubsub.listen(AGENT_LISTEN_MULTIADDR)
     time.sleep(2)
     pubsub.subscribe(topic, result_handler=callback)
 
@@ -50,4 +50,11 @@ def pubsub_send(data: tp.Any, topic: str):
     :param data: Data to send.
     :param topic: Topic to send to.
     """
-    pass
+
+    account = Account(remote_ws=DAPP_NODE_REMOTE_WS)
+    pubsub = PubSub(account)
+
+    pubsub.connect(DAPP_PUBLISH_MULTIADDR)
+    time.sleep(2)
+
+    pubsub.publish(topic, data)

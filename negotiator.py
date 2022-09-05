@@ -12,7 +12,7 @@ from utils import (
     pubsub_send,
     get_last_burn_date,
     get_kwh_to_burn,
-    NEGOTIATOR_TOPIC,
+    NEGOTIATIONS_TOPIC,
 )
 
 logger = getLogger(__name__)
@@ -40,7 +40,7 @@ def callback_negotiations(obj, update_nr, subscription_id):
 
         logger.info("Sending response to the DApp")
         outcome_data: str = json.dumps(dict(last_burn_date=last_burn_date, kwh_to_burn=kwh_to_burn))
-        pubsub_send(outcome_data, NEGOTIATOR_TOPIC)
+        pubsub_send(outcome_data, NEGOTIATIONS_TOPIC)
 
     except Exception:
         logger.error(f"Failed to process DApp query: {traceback.format_exc()}")
@@ -53,7 +53,7 @@ def main():
     """
 
     logger.info("Starting negotiator... Waiting for incoming messages.")
-    negotiator = pubsub_subscribe(topic=NEGOTIATOR_TOPIC, callback=callback_negotiations)
+    negotiator = pubsub_subscribe(topic=NEGOTIATIONS_TOPIC, callback=callback_negotiations)
 
 
 if __name__ == "__main__":
