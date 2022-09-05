@@ -29,10 +29,10 @@ LIABILITY_TOPIC = "liability"
 
 SQLITE_DB_PATH = path.join(path.abspath(path.dirname(__file__)), "..", "db", "burns.db")
 
-COAL_SHARE_TABLE_PATH = path.join(
-    path.abspath(path.dirname(__file__)), "..", "coal_share", "share-electricity-coal-01-09-2022_cropped.csv"
+CO2_INTENSITY_TABLE_PATH = path.join(
+    path.abspath(path.dirname(__file__)), "..", "co2_intensity", "carbon-intensity-electricity-01-09-2022_cropped.csv"
 )
-WORLD_COAL_SHARE_COEFFICIENT = 35.9863166809082
+WORLD_CO2_INTENSITY = 35.9863166809082
 
 W3GW = "https://crustwebsites.net"
 W3PS = "https://pin.crustcode.com"
