@@ -97,7 +97,7 @@ def get_tokens_to_burn(kwh: float, geo: str) -> float:
     else:
         logger.info(f"No country was determined. Using global coefficient: {WORLD_CO2_INTENSITY} g/kWh.")
 
-    tons_co2 = kwh*co2_intensity/10**6  # Table show how many grams of CO2 produced per kWh generated in country.
+    tons_co2 = kwh * co2_intensity / 10**6  # Table show how many grams of CO2 produced per kWh generated in country.
 
     logger.info(f"Number of metric tons of CO2 / Carbon assets to burn: {tons_co2}.")
 
