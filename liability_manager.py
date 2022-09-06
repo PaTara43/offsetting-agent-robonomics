@@ -1,12 +1,12 @@
+import logging
 import os
 import traceback
 import typing as tp
 
-from logging import getLogger
 
 from utils import pubsub_subscribe, parse_income_message, create_liability, LIABILITY_TOPIC
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 seed = os.getenv("OFFSETTING_AGENT_SEED")
 
@@ -51,4 +51,5 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     main()

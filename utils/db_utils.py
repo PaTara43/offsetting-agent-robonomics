@@ -8,7 +8,7 @@ import typing as tp
 
 from logging import getLogger
 
-from constants import SQLITE_DB_PATH
+from .constants import SQLITE_DB_PATH
 
 logger = getLogger(__name__)
 

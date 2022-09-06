@@ -9,9 +9,9 @@ import requests
 from ast import literal_eval
 from substrateinterface import Keypair
 
-from constants import W3GW, W3PS
-from exceptions import FailedToUploadFile, FailedToPinFile
-from substrate_utils import create_keypair
+from .constants import W3GW, W3PS
+from .exceptions import FailedToUploadFile, FailedToPinFile
+from .substrate_utils import create_keypair
 
 
 def ipfs_get_data(cid: str) -> dict:

@@ -8,7 +8,7 @@ import typing as tp
 from robonomicsinterface import Account, Liability
 from substrateinterface import KeypairType
 
-from ipfs_utils import ipfs_upload_dict
+from .ipfs_utils import ipfs_upload_dict
 
 
 def create_liability(

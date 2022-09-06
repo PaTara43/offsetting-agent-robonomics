@@ -1,13 +1,13 @@
+import logging
 import os
 import traceback
 import typing as tp
 
-from logging import getLogger
 from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash
 
 from utils import burn_carbon_asset, ipfs_get_data, get_tokens_to_burn, report_liability
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 seed = os.getenv("OFFSETTING_AGENT_SEED")
 worker_account = Account(seed=seed)
@@ -57,4 +57,5 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     main()

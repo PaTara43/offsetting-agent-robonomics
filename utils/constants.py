@@ -28,7 +28,7 @@ AGENT_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"
 NEGOTIATIONS_TOPIC = "negotiations"
 LIABILITY_TOPIC = "liability"
 DAPP_NODE_REMOTE_WS = "ws://127.0.0.1:9991"
-DAPP_PUBLISH_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"
+DAPP_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44441"
 
 SQLITE_DB_PATH = path.join(path.abspath(path.dirname(__file__)), "..", "db", "burns.db")
 

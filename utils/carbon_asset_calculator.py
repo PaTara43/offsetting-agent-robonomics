@@ -11,8 +11,8 @@ from datetime import date
 from geopy.geocoders import Nominatim
 from logging import getLogger
 
-from constants import CO2_INTENSITY_TABLE_PATH, WORLD_CO2_INTENSITY
-from db_utils import sql_query
+from .constants import CO2_INTENSITY_TABLE_PATH, WORLD_CO2_INTENSITY
+from .db_utils import sql_query
 
 logger = getLogger(__name__)
 

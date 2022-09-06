@@ -8,9 +8,9 @@ from logging import getLogger
 from scalecodec.types import GenericCall, GenericExtrinsic
 from substrateinterface import SubstrateInterface, Keypair, ExtrinsicReceipt
 
-from db_utils import sql_query
-from constants import CARBON_ASSET_ID
-from substrate_utils import create_keypair, create_instance
+from .db_utils import sql_query
+from .constants import CARBON_ASSET_ID
+from .substrate_utils import create_keypair, create_instance
 
 logger = getLogger(__name__)
 
