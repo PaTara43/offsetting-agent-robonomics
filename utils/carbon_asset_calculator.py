@@ -4,7 +4,6 @@ Perform various carbon asset burning process calculations.
 """
 
 import csv
-import logging
 import typing as tp
 
 from datetime import date
@@ -17,7 +16,7 @@ from .db_utils import sql_query
 logger = getLogger(__name__)
 
 
-def get_last_burn_date(address: str) -> tp.Optional[date]:
+def get_last_burn_date(address: str) -> tp.Union[date, str]:
     """
     Get the date of a last token burn for an account.
 
@@ -32,7 +31,7 @@ def get_last_burn_date(address: str) -> tp.Optional[date]:
 
     if not response:
         logger.info(f"No burns were made for {address}.")
-        return None
+        return "None"
     else:
         date_list: list = list(map(int, str(response[0][0]).split("-")))
         date_: date = date(date_list[0], date_list[1], date_list[2])
