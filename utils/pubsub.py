@@ -5,7 +5,7 @@ from ast import literal_eval
 from logging import getLogger
 from robonomicsinterface import Account, PubSub
 
-from constants import AGENT_LISTEN_MULTIADDR, AGENT_NODE_REMOTE_WS, DAPP_PUBLISH_MULTIADDR, DAPP_NODE_REMOTE_WS
+from .constants import AGENT_NODE_REMOTE_WS, DAPP_LISTEN_MULTIADDR, DAPP_NODE_REMOTE_WS
 
 logger = getLogger(__name__)
 
@@ -20,41 +20,42 @@ def pubsub_subscribe(topic: str, callback: callable):
     account = Account(remote_ws=AGENT_NODE_REMOTE_WS)
     pubsub = PubSub(account)
 
-    pubsub.listen(AGENT_LISTEN_MULTIADDR)
     time.sleep(2)
     pubsub.subscribe(topic, result_handler=callback)
 
 
-def parse_income_message(rawdata: tp.List[tp.Any]) -> dict:
+def parse_income_message(raw_data: tp.List[tp.Any]) -> dict:
     """
     Parse income PubSub Message.
 
-    :param rawdata: Income PubSub Message.
+    :param raw_data: Income PubSub Message.
 
     :return: technics, amount, promisee, promisee_signature.
 
     """
 
-    for i in range(len(rawdata)):
-        rawdata[i] = chr(rawdata[i])
-    data: str = "".join(rawdata)
+    for i in range(len(raw_data)):
+        raw_data[i] = chr(raw_data[i])
+    data: str = "".join(raw_data)
     data_dict: tp.Dict[tp.Union[dict, int, str]] = literal_eval(data)
 
     return data_dict
 
 
-def pubsub_send(data: tp.Any, topic: str):
+def pubsub_send(topic: str, data: tp.Any):
     """
     Send data to a topic via PubSub
 
-    :param data: Data to send.
     :param topic: Topic to send to.
+    :param data: Data to send.
+
     """
 
+    logger.info(f"Sending data {data} to topic {topic}.")
     account = Account(remote_ws=DAPP_NODE_REMOTE_WS)
     pubsub = PubSub(account)
 
-    pubsub.connect(DAPP_PUBLISH_MULTIADDR)
+    pubsub.connect(DAPP_LISTEN_MULTIADDR)
     time.sleep(2)
 
-    pubsub.publish(topic, data)
+    pubsub.publish(topic, str(data))

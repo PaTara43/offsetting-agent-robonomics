@@ -1,10 +1,15 @@
+"""
+This module listens to liability queries in Robonomics Pubsub and creates a liability once requested.
+
+"""
+
 import logging
 import os
 import traceback
 import typing as tp
 
 
-from utils import pubsub_subscribe, parse_income_message, create_liability, LIABILITY_TOPIC
+from utils import pubsub_subscribe, parse_income_message, create_liability, LIABILITY_QUERY_TOPIC
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +52,7 @@ def main():
     """
 
     logger.info("Starting liability_manager... Waiting for incoming messages.")
-    liability_manager = pubsub_subscribe(topic=LIABILITY_TOPIC, callback=callback_liability)
+    liability_manager = pubsub_subscribe(topic=LIABILITY_QUERY_TOPIC, callback=callback_liability)
 
 
 if __name__ == "__main__":
