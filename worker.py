@@ -1,16 +1,29 @@
+"""
+This module catches income liabilities and burns tokens once Liability created. Then reports.
+
+"""
+
 import logging
 import os
 import traceback
 import typing as tp
 
+from datetime import date
 from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash
 
-from utils import burn_carbon_asset, ipfs_get_data, get_tokens_to_burn, report_liability
+from utils import (
+    ipfs_get_data,
+    get_tokens_to_burn,
+    burn_carbon_asset,
+    add_burn_record,
+    report_liability,
+    ROBONOMICS_NODE
+)
 
 logger = logging.getLogger(__name__)
 
 seed = os.getenv("OFFSETTING_AGENT_SEED")
-worker_account = Account(seed=seed)
+worker_account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
 
 
 def callback_new_liability(data):
@@ -34,6 +47,7 @@ def callback_new_liability(data):
             logger.info(f"Burning tokens {tokens_to_burn}...")
 
             tr_hash: str = burn_carbon_asset(seed=seed, tokens_to_burn=tokens_to_burn)
+            add_burn_record(address=data[3], date_=date.today(), kwh_burnt=technics["kwh"])
             logger.info(f"Reporting burn {tr_hash}")
             report_tr_hash: str = report_liability(
                 seed=seed, index=data[0], report_content=dict(burn_transaction_hash=tr_hash)

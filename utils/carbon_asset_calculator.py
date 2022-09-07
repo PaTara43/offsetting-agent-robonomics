@@ -36,7 +36,7 @@ def get_last_burn_date(address: str) -> tp.Union[date, str]:
         date_list: list = list(map(int, str(response[0][0]).split("-")))
         date_: date = date(date_list[0], date_list[1], date_list[2])
         logger.info(f"Date fetched: {date_}")
-        return date_
+        return str(date_)
 
 
 def get_kwh_to_burn(address: str, kwh_current: float) -> float:

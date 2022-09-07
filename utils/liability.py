@@ -8,6 +8,7 @@ import typing as tp
 from robonomicsinterface import Account, Liability
 from substrateinterface import KeypairType
 
+from .constants import ROBONOMICS_NODE
 from .ipfs_utils import ipfs_upload_dict
 
 
@@ -26,7 +27,7 @@ def create_liability(
     :return: liability index and transaction hash.
 
     """
-    account = Account(seed=seed)
+    account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
     liability_manager = Liability(account)
 
     return liability_manager.create(
@@ -52,7 +53,7 @@ def report_liability(seed: str, index: int, report_content: dict) -> str:
 
     """
 
-    account = Account(seed=seed)
+    account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
     liability_manager = Liability(account)
 
     report_content_cid = ipfs_upload_dict(seed=seed, content=report_content)
