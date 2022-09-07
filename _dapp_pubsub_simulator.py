@@ -63,10 +63,10 @@ if __name__ == '__main__':
         query = input("last burn date (1)/liability (2)")
 
         if query == "1":
-            negotiations_query = dict(address=dapp_user.get_address(), kwh_current=12.0)
+            negotiations_query = dict(address=dapp_user.get_address(), kwh_current=20.0)
             print(pubsub.publish(LAST_BURN_DATE_QUERY_TOPIC, str(negotiations_query)))
         elif query == "2":
-            technics = ipfs_upload_dict(os.getenv("OFFSETTING_AGENT_SEED"), dict(geo="59.934280, 30.335099", kwh=12.0))
+            technics = ipfs_upload_dict(os.getenv("OFFSETTING_AGENT_SEED"), dict(geo="59.934280, 30.335099", kwh=5.0))
             economics = 0
             promisee = dapp_user.get_address()
             liability_singer = Liability(dapp_user)
