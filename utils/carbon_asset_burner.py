@@ -46,7 +46,7 @@ def add_burn_record(address: str, date_: date, kwh_burnt: float):
     Update DB record of committed burns.
 
     :param address: Liability promisee address.
-    :param date_: Date when the tokens was burnt.
+    :param date_: Date when the tokens were burnt.
     :param kwh_burnt: How much kWt*h were burnt.
 
     """
