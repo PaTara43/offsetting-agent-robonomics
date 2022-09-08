@@ -9,6 +9,7 @@ import traceback
 import typing as tp
 
 from datetime import date
+from time import time
 
 from utils import (
     pubsub_subscribe,
@@ -42,7 +43,7 @@ def callback_negotiations(obj, update_nr, subscription_id):
         kwh_to_burn: float = get_kwh_to_burn(income_data["address"], income_data["kwh_current"])
 
         logger.info("Sending response to the DApp")
-        outcome_data: str = json.dumps(dict(last_burn_date=last_burn_date, kwh_to_burn=kwh_to_burn))
+        outcome_data: str = json.dumps(dict(last_burn_date=last_burn_date, kwh_to_burn=kwh_to_burn, timestamp=time()))
         pubsub_send(LAST_BURN_DATE_RESPONSE_TOPIC, outcome_data)
 
     except Exception:

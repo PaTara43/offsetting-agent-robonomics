@@ -1,10 +1,11 @@
 import os
-import time
 
+from datetime import datetime
 from logging import getLogger
 from robonomicsinterface import Account, PubSub, Liability, CommonFunctions
 from substrateinterface import KeypairType
 from threading import Thread
+from time import sleep, time
 
 from utils.constants import (
     LAST_BURN_DATE_QUERY_TOPIC,
@@ -31,7 +32,7 @@ def subscribe_negotiations():
     pubsub_ = PubSub(account_)
 
     pubsub_.listen(DAPP_LISTEN_MULTIADDR)
-    time.sleep(2)
+    sleep(2)
     pubsub_.subscribe(LAST_BURN_DATE_RESPONSE_TOPIC, result_handler=callback_negotiations)
 
 
@@ -56,14 +57,14 @@ if __name__ == '__main__':
     # Negotiations query emulation:
     pubsub = PubSub(dapp_user)
     pubsub.connect(DAPP_PUBLISH_MULTIADDR)
-    time.sleep(2)
+    sleep(2)
 
     while True:
 
         query = input("last burn date (1)/liability (2)")
 
         if query == "1":
-            negotiations_query = dict(address=dapp_user.get_address(), kwh_current=20.0)
+            negotiations_query = dict(address=dapp_user.get_address(), kwh_current=20.0, timestamp=time())
             print(pubsub.publish(LAST_BURN_DATE_QUERY_TOPIC, str(negotiations_query)))
         elif query == "2":
             technics = ipfs_upload_dict(os.getenv("OFFSETTING_AGENT_SEED"), dict(geo="59.934280, 30.335099", kwh=5.0))
@@ -75,5 +76,6 @@ if __name__ == '__main__':
             liability_query = dict(technics=technics,
                                    economics=economics,
                                    promisee=promisee,
-                                   promisee_signature=promisee_signature)
+                                   promisee_signature=promisee_signature,
+                                   timestamp=time())
             print(pubsub.publish(LIABILITY_QUERY_TOPIC, str(liability_query)))
