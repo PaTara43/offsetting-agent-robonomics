@@ -33,9 +33,9 @@ AGENT_NODE_REMOTE_WS = "ws://127.0.0.1:9944"
 AGENT_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"
 AGENT_PUBLISH_MULTIADDR = "/ip4/127.0.0.1/tcp/44441"
 
-DAPP_NODE_REMOTE_WS = "ws://127.0.0.1:9991"
-DAPP_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44441"
-DAPP_PUBLISH_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"
+DAPP_NODE_REMOTE_WS = "ws://127.0.0.1:9991"  # This if for _dapp_pubsub_simulator
+DAPP_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44441"  # This if for _dapp_pubsub_simulator
+DAPP_PUBLISH_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"  # This if for _dapp_pubsub_simulator
 
 LAST_BURN_DATE_QUERY_TOPIC = "last_burn_date_query"
 LAST_BURN_DATE_RESPONSE_TOPIC = "last_burn_date_response"
