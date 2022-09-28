@@ -1,11 +1,10 @@
-import time
 import typing as tp
 
 from ast import literal_eval
 from logging import getLogger
 from robonomicsinterface import Account, PubSub
 
-from .constants import AGENT_NODE_REMOTE_WS, AGENT_LISTEN_MULTIADDR, AGENT_PUBLISH_MULTIADDR
+from .constants import AGENT_NODE_REMOTE_WS
 
 logger = getLogger(__name__)
 
@@ -19,9 +18,7 @@ def pubsub_subscribe(topic: str, callback: callable):
     """
     account = Account(remote_ws=AGENT_NODE_REMOTE_WS)
     pubsub = PubSub(account)
-
-    pubsub.listen(AGENT_LISTEN_MULTIADDR)
-    time.sleep(2)
+    logger.info(f"Subscribing to a {topic} topic in Robonomics PubSub...")
     pubsub.subscribe(topic, result_handler=callback)
 
 
@@ -55,8 +52,5 @@ def pubsub_send(topic: str, data: tp.Any):
     logger.info(f"Sending data {data} to topic {topic}.")
     account = Account(remote_ws=AGENT_NODE_REMOTE_WS)
     pubsub = PubSub(account)
-
-    pubsub.connect(AGENT_PUBLISH_MULTIADDR)
-    time.sleep(2)
 
     logger.info(f"PubSub send result: {pubsub.publish(topic, str(data))}")

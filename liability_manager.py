@@ -14,6 +14,7 @@ from utils import pubsub_subscribe, parse_income_message, create_liability, LIAB
 logger = logging.getLogger(__name__)
 
 seed = os.getenv("OFFSETTING_AGENT_SEED")
+keypair_type: dict = {"ED25519": 0, "SR25519": 1, "ECDSA": 2}
 
 
 def callback_liability(obj, update_nr, subscription_id):
@@ -29,15 +30,17 @@ def callback_liability(obj, update_nr, subscription_id):
 
     try:
 
-        income_data: tp.Dict[str, tp.Union[str, int]] = parse_income_message(obj["params"]["result"]["data"])
+        income_data: tp.Dict[str, tp.Union[str, int, dict]] = parse_income_message(obj["params"]["result"]["data"])
         logger.info(f"Got request for burning carbon assets: {income_data}")
         logger.info(f"Creating liability...")
+        promisee_signature_crypto_type: str = list(income_data["promisee_signature"].keys())[0]
         index, tr_hash = create_liability(
             seed=seed,
             technics=income_data["technics"],
             economics=income_data["economics"],
             promisee=income_data["promisee"],
-            promisee_signature=income_data["promisee_signature"],
+            promisee_signature=income_data["promisee_signature"][promisee_signature_crypto_type],
+            promisee_signature_crypto_type=keypair_type[promisee_signature_crypto_type]
         )
         logger.info(f"Liability {index} created at {tr_hash}.")
 

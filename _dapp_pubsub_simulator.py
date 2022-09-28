@@ -1,25 +1,21 @@
+import logging
 import os
 
-from datetime import datetime
-from logging import getLogger
-from robonomicsinterface import Account, PubSub, Liability, CommonFunctions
+from robonomicsinterface import Account, PubSub, Liability
 from substrateinterface import KeypairType
 from threading import Thread
-from time import sleep, time
+from time import time
 
 from utils.constants import (
     LAST_BURN_DATE_QUERY_TOPIC,
     LAST_BURN_DATE_RESPONSE_TOPIC,
     LIABILITY_QUERY_TOPIC,
-    DAPP_NODE_REMOTE_WS,
-    DAPP_LISTEN_MULTIADDR,
-    DAPP_PUBLISH_MULTIADDR,
-    ROBONOMICS_NODE
+    DAPP_NODE_REMOTE_WS
 )
 from utils.pubsub import parse_income_message
 from utils.ipfs_utils import ipfs_upload_dict
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def callback_negotiations(obj, update_nr, subscription_id):
@@ -31,24 +27,17 @@ def subscribe_negotiations():
     account_ = Account(remote_ws=DAPP_NODE_REMOTE_WS)
     pubsub_ = PubSub(account_)
 
-    pubsub_.listen(DAPP_LISTEN_MULTIADDR)
-    sleep(2)
     pubsub_.subscribe(LAST_BURN_DATE_RESPONSE_TOPIC, result_handler=callback_negotiations)
 
 
 if __name__ == '__main__':
 
+    logging.basicConfig(level=logging.INFO)
+
     # Create DAPP account
     dapp_user = Account(remote_ws=DAPP_NODE_REMOTE_WS,
                         seed=os.getenv("DAPP_SEED"),
                         crypto_type=KeypairType.ED25519)
-
-    # Send tokens to the agent account in dev net to create liabilities.
-    agent = Account(seed=os.getenv("OFFSETTING_AGENT_SEED"))
-
-    alice = Account(seed="//Alice", remote_ws=ROBONOMICS_NODE)
-    cf = CommonFunctions(alice)
-    cf.transfer_tokens(agent.get_address(), 10 * 10 ** 9)
 
     # Negotiations subscriber emulation
     negotiations_subscriber_thread = Thread(target=subscribe_negotiations)
@@ -56,8 +45,6 @@ if __name__ == '__main__':
 
     # Negotiations query emulation:
     pubsub = PubSub(dapp_user)
-    pubsub.connect(DAPP_PUBLISH_MULTIADDR)
-    sleep(2)
 
     while True:
 
@@ -65,7 +52,7 @@ if __name__ == '__main__':
 
         if query == "1":
             negotiations_query = dict(address=dapp_user.get_address(), kwh_current=20.0, timestamp=time())
-            print(pubsub.publish(LAST_BURN_DATE_QUERY_TOPIC, str(negotiations_query)))
+            print(f"publish: {pubsub.publish(LAST_BURN_DATE_QUERY_TOPIC, str(negotiations_query))}")
         elif query == "2":
             technics = ipfs_upload_dict(os.getenv("OFFSETTING_AGENT_SEED"), dict(geo="59.934280, 30.335099", kwh=5.0))
             economics = 0

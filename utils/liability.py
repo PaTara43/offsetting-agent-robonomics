@@ -6,14 +6,12 @@ Tool for creating and reporting liabilities in Robonomics Network.
 import typing as tp
 
 from robonomicsinterface import Account, Liability
-from substrateinterface import KeypairType
-
 from .constants import ROBONOMICS_NODE
 from .ipfs_utils import ipfs_upload_dict
 
 
 def create_liability(
-    seed: str, technics: str, economics: int, promisee: str, promisee_signature: str
+    seed: str, technics: str, economics: int, promisee: str, promisee_signature: str, promisee_signature_crypto_type: int
 ) -> tp.Tuple[int, str]:
     """
     Create liability for an agent ot burn a carbon tokens. Created by agent.
@@ -23,6 +21,7 @@ def create_liability(
     :param economics: XRT reward to agent for burning. Paid by promisee.
     :param promisee: Promisee ss58_address.
     :param promisee_signature: Promisee technics and economics signed message.
+    :param promisee_signature_crypto_type: Promisee signature crypto type
 
     :return: liability index and transaction hash.
 
@@ -37,7 +36,7 @@ def create_liability(
         promisor=account.get_address(),
         promisee_params_signature=promisee_signature,
         promisor_params_signature=liability_manager.sign_liability(technics_hash=technics, economics=economics),
-        promisee_signature_crypto_type=KeypairType.ED25519,
+        promisee_signature_crypto_type=promisee_signature_crypto_type,
     )
 
 

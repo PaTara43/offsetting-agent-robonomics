@@ -27,15 +27,9 @@ IPCI_SS58_ADDRESS_TYPE = 32
 IPCI_REMOTE_WS = "wss://ipci.frontier.rpc.robonomics.network"
 CARBON_ASSET_ID = "0xf7917950a91fcce8ca17b6d24f8607490000000000000067"
 
-ROBONOMICS_NODE = "ws://127.0.0.1:9944"  # None for Kusama Parachain Node. "ws://127.0.0.1:9944" for testing.
-
-AGENT_NODE_REMOTE_WS = "ws://127.0.0.1:9944"
-AGENT_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"
-AGENT_PUBLISH_MULTIADDR = "/ip4/127.0.0.1/tcp/44441"
-
-DAPP_NODE_REMOTE_WS = "ws://127.0.0.1:9991"  # This if for _dapp_pubsub_simulator
-DAPP_LISTEN_MULTIADDR = "/ip4/127.0.0.1/tcp/44441"  # This if for _dapp_pubsub_simulator
-DAPP_PUBLISH_MULTIADDR = "/ip4/127.0.0.1/tcp/44440"  # This if for _dapp_pubsub_simulator
+ROBONOMICS_NODE = None  # None for Kusama Parachain Node. "ws://127.0.0.1:9944" for testing.
+AGENT_NODE_REMOTE_WS = "wss://robonomics.rpc.multi-agent.io/"  # 91.122.35.172
+DAPP_NODE_REMOTE_WS = "wss://kusama.rpc.robonomics.network/"  # This if for _dapp_pubsub_simulator 23.88.52.147
 
 LAST_BURN_DATE_QUERY_TOPIC = "last_burn_date_query"
 LAST_BURN_DATE_RESPONSE_TOPIC = "last_burn_date_response"
