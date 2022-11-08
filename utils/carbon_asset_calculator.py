@@ -4,60 +4,13 @@ Perform various carbon asset burning process calculations.
 """
 
 import csv
-import typing as tp
 
-from datetime import date
 from geopy.geocoders import Nominatim
 from logging import getLogger
 
 from .constants import CO2_INTENSITY_TABLE_PATH, WORLD_CO2_INTENSITY
-from .db_utils import sql_query
 
 logger = getLogger(__name__)
-
-
-def get_last_burn_date(address: str) -> tp.Union[date, str]:
-    """
-    Get the date of a last token burn for an account.
-
-    :param address: Account to check.
-
-    :return: Date of last burn. None if no burns.
-
-    """
-
-    logger.info(f"SQL query to get LastBurnDate for address '{address}'")
-    response: list = sql_query(f"SELECT LastBurnDate from Burns where Address = '{address}'")
-
-    if not response:
-        logger.info(f"No burns were made for {address}.")
-        return "None"
-    else:
-        date_list: list = list(map(int, str(response[0][0]).split("-")))
-        date_: date = date(date_list[0], date_list[1], date_list[2])
-        logger.info(f"Date fetched: {date_}")
-        return str(date_)
-
-
-def get_kwh_to_burn(address: str, kwh_current: float) -> float:
-    """
-    Get a number of kWt*h to burn given the record of burns.
-
-    :param address: Account to check.
-    :param kwh_current: Current account kWt*h
-
-    :return: Number of kWt*h to burn this time.
-
-    """
-
-    logger.info(f"SQL query to get TotalBurnt amount for address '{address}'")
-    response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
-    if not response:
-        logger.info(f"No burns were made for {address}.")
-        return kwh_current
-    else:
-        logger.info(f"kWt*h totally burnt: {response[0][0]}")
-        return kwh_current - response[0][0]
 
 
 def get_tokens_to_burn(kwh: float, geo: str) -> float:
@@ -97,7 +50,7 @@ def get_tokens_to_burn(kwh: float, geo: str) -> float:
     else:
         logger.info(f"No country was determined. Using global coefficient: {WORLD_CO2_INTENSITY} g/kWh.")
 
-    tons_co2 = kwh * co2_intensity / 10**6  # Table show how many grams of CO2 produced per kWh generated in country.
+    tons_co2 = kwh * co2_intensity / 10**6  # Table shows how many grams of CO2 produced per kWh generated in country.
 
     logger.info(f"Number of metric tons of CO2 / Carbon assets to burn for {kwh} kWh: {tons_co2}.")
 
