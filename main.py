@@ -8,7 +8,7 @@ import os
 
 from utils import get_tokens_to_burn, burn_carbon_asset
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 if __name__ == "__main__":
     seed = os.getenv("OFFSETTING_AGENT_SEED")

@@ -19,7 +19,7 @@ IPCI_TYPE_REGISTRY = {
     }
 }
 IPCI_SS58_ADDRESS_TYPE = 32
-IPCI_REMOTE_WS = "wss://ipci.frontier.rpc.robonomics.network"
+IPCI_REMOTE_WS = "wss://kusama.rpc.ipci.io"
 CARBON_ASSET_ID = "0xf7917950a91fcce8ca17b6d24f8607490000000000000067"
 
 CO2_INTENSITY_TABLE_PATH = path.join(
