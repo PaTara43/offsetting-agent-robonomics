@@ -4,7 +4,7 @@ import os
 from robonomicsinterface import Account, PubSub, Liability
 from substrateinterface import KeypairType
 from threading import Thread
-from time import time
+from time import time, sleep
 
 from utils.constants import (
     LAST_BURN_DATE_QUERY_TOPIC,
@@ -54,7 +54,7 @@ if __name__ == '__main__':
             negotiations_query = dict(address=dapp_user.get_address(), kwh_current=20.0, timestamp=time())
             print(f"publish: {pubsub.publish(LAST_BURN_DATE_QUERY_TOPIC, str(negotiations_query))}")
         elif query == "2":
-            technics = ipfs_upload_dict(os.getenv("OFFSETTING_AGENT_SEED"), dict(geo="59.934280, 30.335099", kwh=5.0))
+            technics = ipfs_upload_dict(os.getenv("DAPP_SEED"), dict(geo="59.934280, 30.335099", kwh=5.0))
             economics = 0
             promisee = dapp_user.get_address()
             liability_singer = Liability(dapp_user)
@@ -63,6 +63,8 @@ if __name__ == '__main__':
             liability_query = dict(technics=technics,
                                    economics=economics,
                                    promisee=promisee,
-                                   promisee_signature=promisee_signature,
+                                   promisee_signature=dict(ED25519=promisee_signature),
                                    timestamp=time())
+            print(pubsub.connect("/dns/robonomics.rpc.multi-agent.io/tcp/44440"))
+            sleep(2)
             print(pubsub.publish(LIABILITY_QUERY_TOPIC, str(liability_query)))

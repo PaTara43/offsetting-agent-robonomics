@@ -4,6 +4,7 @@ IPFS posting and downloading mechanism using Web3 Gateway.
 """
 
 import json
+import logging
 import requests
 
 from ast import literal_eval
@@ -12,6 +13,9 @@ from substrateinterface import Keypair
 from .constants import W3GW, W3PS
 from .exceptions import FailedToUploadFile, FailedToPinFile
 from .substrate_utils import create_keypair
+
+
+logger = logging.getLogger(__name__)
 
 
 def ipfs_get_data(cid: str) -> dict:
@@ -52,10 +56,11 @@ def ipfs_upload_dict(seed: str, content: dict) -> str:
     if response.status_code == 200:
         resp = literal_eval(response.content.decode("utf-8"))
         cid = resp["Hash"]
+        logger.info(f"Uploaded file. Got IPFS cid {cid}.")
     else:
         raise FailedToUploadFile(response.status_code)
 
-    _pin_file(keypair, cid)
+    # _pin_file(keypair, cid)
 
     return cid
 
@@ -79,6 +84,7 @@ def _pin_file(keypair: Keypair, ipfs_cid: str) -> bool:
     )
 
     if response.status_code == 200:
+        logger.info(f"File {ipfs_cid} pinned.")
         return True
     else:
         raise FailedToPinFile(response.status_code)
