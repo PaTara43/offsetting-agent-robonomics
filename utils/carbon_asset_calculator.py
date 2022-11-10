@@ -54,4 +54,4 @@ def get_tokens_to_burn(kwh: float, geo: str) -> float:
 
     logger.info(f"Number of metric tons of CO2 / Carbon assets to burn for {kwh} kWh: {tons_co2}.")
 
-    return tons_co2*10**9  # 1 Carbon asset per metric tonn of co2, decimal of 9 for the asset in the blockchain
+    return tons_co2 * 10**9  # 1 Carbon asset per metric tonn of co2, decimal of 9 for the asset in the blockchain
