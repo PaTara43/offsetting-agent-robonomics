@@ -6,7 +6,10 @@ This file contains functions to burn carbon assets in IPCI network and update bu
 from logging import getLogger
 from substrateinterface import SubstrateInterface, Keypair
 
-from .constants import IPCI_REMOTE_WS, IPCI_TYPE_REGISTRY, IPCI_SS58_ADDRESS_TYPE
+from .constants import (
+    IPCI_REMOTE_WS,
+    IPCI_SS58_ADDRESS_TYPE
+)
 
 logger = getLogger(__name__)
 
@@ -21,9 +24,7 @@ def create_instance() -> SubstrateInterface:
 
     interface: SubstrateInterface = SubstrateInterface(
         url=IPCI_REMOTE_WS,
-        ss58_format=IPCI_SS58_ADDRESS_TYPE,
-        type_registry_preset="substrate-node-template",
-        type_registry=IPCI_TYPE_REGISTRY,
+        ss58_format=IPCI_SS58_ADDRESS_TYPE
     )
 
     return interface
