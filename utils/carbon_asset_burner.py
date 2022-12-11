@@ -31,8 +31,8 @@ def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
 
     call: GenericCall = interface.compose_call(
         call_module="CarbonAsset",
-        call_function="burn",
-        call_params=dict(id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=tokens_to_burn),
+        call_function="selfBurn",
+        call_params=dict(id=CARBON_ASSET_ID, amount=tokens_to_burn),
     )
 
     signed_extrinsic: GenericExtrinsic = interface.create_signed_extrinsic(call=call, keypair=keypair)
