@@ -9,22 +9,9 @@ Robonomics node launch for dev tests:
 
 from os import path
 
-IPCI_TYPE_REGISTRY = {
-    "types": {
-        "AccountInfo": "AccountInfoWithRefCount",
-        "Address": "AccountId",
-        "LookupSource": "AccountId",
-        "RefCount": "u8",
-        "Record": "Vec<u8>",
-        "TechnicalParam": "Vec<u8>",
-        "TechnicalReport": "Vec<u8>",
-        "EconomicalParam": "{}",
-        "ProofParam": "MultiSignature",
-        "LiabilityIndex": "u64",
-    }
-}
-IPCI_SS58_ADDRESS_TYPE = 32
-IPCI_REMOTE_WS = "wss://ipci.frontier.rpc.robonomics.network"
+
+STATEMINE_SS58_ADDRESS_TYPE = 2
+STATEMINE_REMOTE_WS = "wss://statemine-rpc.polkadot.io"
 CARBON_ASSET_ID = "0xf7917950a91fcce8ca17b6d24f8607490000000000000067"
 
 ROBONOMICS_NODE = None  # None for Kusama Parachain Node. "ws://127.0.0.1:9944" for testing.
