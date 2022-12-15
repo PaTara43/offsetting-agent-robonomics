@@ -6,7 +6,7 @@ This file contains functions to burn carbon assets in IPCI network and update bu
 from logging import getLogger
 from substrateinterface import SubstrateInterface, Keypair
 
-from .constants import STATEMINE_REMOTE_WS, IPCI_TYPE_REGISTRY, STATEMINE_SS58_ADDRESS_TYPE
+from .constants import STATEMINE_REMOTE_WS, STATEMINE_SS58_ADDRESS_TYPE
 
 logger = getLogger(__name__)
 
