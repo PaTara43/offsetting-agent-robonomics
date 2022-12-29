@@ -9,15 +9,15 @@ import traceback
 import typing as tp
 
 from datetime import date
-from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash
+from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash, ipfs_get_content
 
 from utils import (
-    ipfs_get_data,
     get_tokens_to_burn,
     burn_carbon_asset,
     add_burn_record,
     report_liability,
-    ROBONOMICS_NODE
+    ROBONOMICS_NODE,
+    W3GW
 )
 
 logger = logging.getLogger(__name__)
@@ -41,7 +41,7 @@ def callback_new_liability(data):
             logger.info(f"New liability for the agent: {data}")
 
             cid: str = ipfs_32_bytes_to_qm_hash(data[1]["hash"])
-            technics: tp.Dict[str, tp.Union[float, str]] = ipfs_get_data(cid)
+            technics: tp.Dict[str, tp.Union[float, str]] = ipfs_get_content(cid, gateway=W3GW)
             tokens_to_burn: float = get_tokens_to_burn(technics["kwh"], technics["geo"])
 
             logger.info(f"Burning tokens {tokens_to_burn}...")

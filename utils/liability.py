@@ -5,9 +5,8 @@ Tool for creating and reporting liabilities in Robonomics Network.
 
 import typing as tp
 
-from robonomicsinterface import Account, Liability
-from .constants import ROBONOMICS_NODE
-from .ipfs_utils import ipfs_upload_dict
+from robonomicsinterface import Account, Liability, ipfs_upload_content, web_3_auth
+from .constants import ROBONOMICS_NODE, W3GW
 
 
 def create_liability(
@@ -55,6 +54,7 @@ def report_liability(seed: str, index: int, report_content: dict) -> str:
     account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
     liability_manager = Liability(account)
 
-    report_content_cid = ipfs_upload_dict(seed=seed, content=report_content)
+    auth = web_3_auth(seed=seed)
+    report_content_cid, _ = ipfs_upload_content(content=report_content, gateway=W3GW, auth=auth)
 
     return liability_manager.finalize(index=index, report_hash=report_content_cid)

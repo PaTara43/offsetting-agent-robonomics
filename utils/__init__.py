@@ -9,8 +9,8 @@ from .constants import (
     LAST_BURN_DATE_QUERY_TOPIC,
     LAST_BURN_DATE_RESPONSE_TOPIC,
     LIABILITY_QUERY_TOPIC,
-    ROBONOMICS_NODE
+    ROBONOMICS_NODE,
+    W3GW
     )
-from .ipfs_utils import ipfs_get_data, ipfs_upload_dict
 from .liability import create_liability, report_liability
 from .pubsub import parse_income_message, pubsub_subscribe, pubsub_send

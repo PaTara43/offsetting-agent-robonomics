@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "offsetting-agent-robonomics"
-version = "0.1.0"
+version = "0.2.0"
 description = "Substrate-based offsetting agent for carbon footprint tokens burn"
 authors = ["PaTara43 <p040399@outlook.com>"]
 license = "Apache License 2.0"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-robonomics-interface = "^1.1.1"
+robonomics-interface = "^1.5.0"
 geopy = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
