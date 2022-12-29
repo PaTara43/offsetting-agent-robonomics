@@ -17,7 +17,7 @@ from utils import (
     add_burn_record,
     report_liability,
     ROBONOMICS_NODE,
-    DOWNLOAD_W3GW
+    DOWNLOAD_W3GW,
 )
 
 logger = logging.getLogger(__name__)

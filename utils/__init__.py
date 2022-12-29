@@ -11,7 +11,7 @@ from .constants import (
     LIABILITY_QUERY_TOPIC,
     ROBONOMICS_NODE,
     UPLOAD_W3GW,
-    DOWNLOAD_W3GW
-    )
+    DOWNLOAD_W3GW,
+)
 from .liability import create_liability, report_liability
 from .pubsub import parse_income_message, pubsub_subscribe, pubsub_send

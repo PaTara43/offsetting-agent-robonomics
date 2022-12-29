@@ -10,7 +10,12 @@ from .constants import ROBONOMICS_NODE, UPLOAD_W3GW
 
 
 def create_liability(
-    seed: str, technics: str, economics: int, promisee: str, promisee_signature: str, promisee_signature_crypto_type: int
+    seed: str,
+    technics: str,
+    economics: int,
+    promisee: str,
+    promisee_signature: str,
+    promisee_signature_crypto_type: int,
 ) -> tp.Tuple[int, str]:
     """
     Create liability for an agent ot burn a carbon tokens. Created by agent.

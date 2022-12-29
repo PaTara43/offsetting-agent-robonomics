@@ -20,9 +20,7 @@ def create_instance() -> SubstrateInterface:
     """
 
     interface: SubstrateInterface = SubstrateInterface(
-        url=STATEMINE_REMOTE_WS,
-        ss58_format=STATEMINE_SS58_ADDRESS_TYPE,
-        type_registry_preset="substrate-node-template"
+        url=STATEMINE_REMOTE_WS, ss58_format=STATEMINE_SS58_ADDRESS_TYPE, type_registry_preset="substrate-node-template"
     )
 
     return interface

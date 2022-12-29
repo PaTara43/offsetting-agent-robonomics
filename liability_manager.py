@@ -40,7 +40,7 @@ def callback_liability(obj, update_nr, subscription_id):
             economics=income_data["economics"],
             promisee=income_data["promisee"],
             promisee_signature=income_data["promisee_signature"][promisee_signature_crypto_type],
-            promisee_signature_crypto_type=keypair_type[promisee_signature_crypto_type]
+            promisee_signature_crypto_type=keypair_type[promisee_signature_crypto_type],
         )
         logger.info(f"Liability {index} created at {tr_hash}.")
 

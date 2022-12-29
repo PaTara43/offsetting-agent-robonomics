@@ -18,7 +18,7 @@ from utils import (
     get_last_burn_date,
     get_kwh_to_burn,
     LAST_BURN_DATE_QUERY_TOPIC,
-    LAST_BURN_DATE_RESPONSE_TOPIC
+    LAST_BURN_DATE_RESPONSE_TOPIC,
 )
 
 logger = logging.getLogger(__name__)
