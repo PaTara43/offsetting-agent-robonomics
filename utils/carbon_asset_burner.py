@@ -9,7 +9,7 @@ from scalecodec.types import GenericCall, GenericExtrinsic
 from substrateinterface import SubstrateInterface, Keypair, ExtrinsicReceipt
 
 from .db_utils import sql_query
-from .constants import CARBON_ASSET_ID
+from .constants import CARBON_ASSET_ID, CARBON_ASSET_DECIMAL
 from .substrate_utils import create_keypair, create_instance
 
 logger = getLogger(__name__)
@@ -32,7 +32,7 @@ def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
     call: GenericCall = interface.compose_call(
         call_module="Assets",
         call_function="burn",
-        call_params=dict(id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=tokens_to_burn),
+        call_params=dict(id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=tokens_to_burn*10**CARBON_ASSET_DECIMAL),
     )
 
     signed_extrinsic: GenericExtrinsic = interface.create_signed_extrinsic(call=call, keypair=keypair)

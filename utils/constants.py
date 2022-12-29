@@ -12,14 +12,16 @@ from os import path
 
 STATEMINE_SS58_ADDRESS_TYPE = 2
 STATEMINE_REMOTE_WS = "wss://statemine-rpc.polkadot.io"
-CARBON_ASSET_ID = "0xf7917950a91fcce8ca17b6d24f8607490000000000000067"
+CARBON_ASSET_ID = 2050
+CARBON_ASSET_DECIMAL = 9
 
-ROBONOMICS_NODE = None  # None for Kusama Parachain Node. "ws://127.0.0.1:9944" for testing.
-AGENT_NODE_REMOTE_WS = "wss://robonomics.rpc.multi-agent.io/"  # 91.122.35.172
+ROBONOMICS_NODE = "ws://127.0.0.1:9944/"  # None for Kusama Parachain Node. "ws://127.0.0.1:9944" for testing.
+AGENT_NODE_REMOTE_WS = "ws://127.0.0.1:9944/"
 
 LAST_BURN_DATE_QUERY_TOPIC = "last_burn_date_query"
 LAST_BURN_DATE_RESPONSE_TOPIC = "last_burn_date_response"
 LIABILITY_QUERY_TOPIC = "liability_query"
+LIABILITY_REPORT_TOPIC = "liability_report"
 
 SQLITE_DB_PATH = path.join(path.abspath(path.dirname(__file__)), "..", "db", "burns.db")
 

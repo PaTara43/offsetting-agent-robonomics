@@ -2,12 +2,13 @@
 This module catches income liabilities and burns tokens once Liability created. Then reports.
 
 """
-
+import json
 import logging
 import os
 import traceback
 import typing as tp
 
+from ast import literal_eval
 from datetime import date
 from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash, ipfs_get_content
 
@@ -18,6 +19,8 @@ from utils import (
     report_liability,
     ROBONOMICS_NODE,
     DOWNLOAD_W3GW,
+    pubsub_send,
+    LIABILITY_REPORT_TOPIC,
 )
 
 logger = logging.getLogger(__name__)
@@ -41,7 +44,7 @@ def callback_new_liability(data):
             logger.info(f"New liability for the agent: {data}")
 
             cid: str = ipfs_32_bytes_to_qm_hash(data[1]["hash"])
-            technics: tp.Dict[str, tp.Union[float, str]] = ipfs_get_content(cid, gateway=DOWNLOAD_W3GW)
+            technics: tp.Dict[str, tp.Union[float, str]] = literal_eval(ipfs_get_content(cid, gateway=DOWNLOAD_W3GW).decode("utf-8"))
             tokens_to_burn: float = get_tokens_to_burn(technics["kwh"], technics["geo"])
 
             logger.info(f"Burning tokens {tokens_to_burn}...")
@@ -53,6 +56,7 @@ def callback_new_liability(data):
                 seed=seed, index=data[0], report_content=dict(burn_transaction_hash=tr_hash)
             )
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")
+            pubsub_send(topic=LIABILITY_REPORT_TOPIC, data=json.dumps({"Promisee": data[3], "Success": "True", "Report": 9}))
 
         except Exception:
             logger.error(f"Failed to process new liability: {traceback.format_exc()}")

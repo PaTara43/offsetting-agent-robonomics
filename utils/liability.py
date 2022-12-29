@@ -3,6 +3,7 @@ Tool for creating and reporting liabilities in Robonomics Network.
 
 """
 
+import json
 import typing as tp
 
 from robonomicsinterface import Account, Liability, ipfs_upload_content, web_3_auth
@@ -60,6 +61,6 @@ def report_liability(seed: str, index: int, report_content: dict) -> str:
     liability_manager = Liability(account)
 
     auth = web_3_auth(seed=seed)
-    report_content_cid, _ = ipfs_upload_content(content=report_content, gateway=UPLOAD_W3GW, auth=auth)
+    report_content_cid, _ = ipfs_upload_content(content=json.dumps(report_content), gateway=UPLOAD_W3GW, auth=auth)
 
     return liability_manager.finalize(index=index, report_hash=report_content_cid)
