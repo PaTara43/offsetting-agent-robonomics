@@ -61,14 +61,14 @@ def callback_new_liability(data):
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")
             pubsub_send(
                 topic=LIABILITY_REPORT_TOPIC,
-                data=json.dumps(dict(address=data[3], success=True, report=data[0], timestamp=time())),
+                data=json.dumps(dict(address=data[3], success=1, report=data[0], timestamp=time())),
             )
 
         except Exception:
             logger.error(f"Failed to process new liability: {traceback.format_exc()}")
             pubsub_send(
                 topic=LIABILITY_REPORT_TOPIC,
-                data=json.dumps({"address": data[3], "Success": "False", "Report": data[0]}),
+                data=json.dumps(dict(address=data[3], success=0, report=data[0], timestamp=time())),
             )
 
 
