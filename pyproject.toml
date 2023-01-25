@@ -7,11 +7,15 @@ license = "Apache License 2.0"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-robonomics-interface = "^1.5.0"
+robonomics-interface = "^1.6.0"
+IPFS-Toolkit = "^0.4.3"
 geopy = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.12.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

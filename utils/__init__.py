@@ -10,10 +10,9 @@ from .constants import (
     LAST_BURN_DATE_RESPONSE_TOPIC,
     LIABILITY_QUERY_TOPIC,
     LIABILITY_REPORT_TOPIC,
-    UPLOAD_W3GW,
-    DOWNLOAD_W3GW,
+    IPFS_W3GW,
     CARBON_ASSET_DECIMAL,
-    AGENT_NODE_REMOTE_WS
+    AGENT_NODE_REMOTE_WS,
 )
 from .liability import create_liability, report_liability
 from .pubsub import parse_income_message, pubsub_subscribe, pubsub_send
