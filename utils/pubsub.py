@@ -4,7 +4,7 @@ from ast import literal_eval
 from logging import getLogger
 from robonomicsinterface import Account, PubSub
 
-from .constants import AGENT_NODE_REMOTE_WS
+from .constants import AGENT_NODE_REMOTE_WS, DAPP_NODE_MULTIADDR
 
 logger = getLogger(__name__)
 
@@ -52,5 +52,5 @@ def pubsub_send(topic: str, data: tp.Any):
     logger.info(f"Sending data {data} to topic {topic}.")
     account = Account(remote_ws=AGENT_NODE_REMOTE_WS)
     pubsub = PubSub(account)
-
+    logger.info(f"PubSub connect result: {pubsub.connect(DAPP_NODE_MULTIADDR)}")
     logger.info(f"PubSub send result: {pubsub.publish(topic, str(data))}")

@@ -15,8 +15,8 @@ STATEMINE_REMOTE_WS = "wss://statemine-rpc.polkadot.io"
 CARBON_ASSET_ID = 2050
 CARBON_ASSET_DECIMAL = 9
 
-ROBONOMICS_NODE = "ws://127.0.0.1:9944/"  # None for Kusama Parachain Node. "ws://127.0.0.1:9944" for testing.
-AGENT_NODE_REMOTE_WS = "ws://127.0.0.1:9944/"
+AGENT_NODE_REMOTE_WS = "wss://robonomics.rpc.multi-agent.io/"
+DAPP_NODE_MULTIADDR = "/dns/kusama.rpc.robonomics.network/tcp/44440"
 
 LAST_BURN_DATE_QUERY_TOPIC = "last_burn_date_query"
 LAST_BURN_DATE_RESPONSE_TOPIC = "last_burn_date_response"

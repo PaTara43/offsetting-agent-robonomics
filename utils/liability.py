@@ -7,7 +7,7 @@ import json
 import typing as tp
 
 from robonomicsinterface import Account, Liability, ipfs_upload_content, web_3_auth
-from .constants import ROBONOMICS_NODE, UPLOAD_W3GW
+from .constants import AGENT_NODE_REMOTE_WS, UPLOAD_W3GW
 
 
 def create_liability(
@@ -31,7 +31,7 @@ def create_liability(
     :return: liability index and transaction hash.
 
     """
-    account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
+    account = Account(seed=seed, remote_ws=AGENT_NODE_REMOTE_WS)
     liability_manager = Liability(account)
 
     return liability_manager.create(
@@ -57,7 +57,7 @@ def report_liability(seed: str, index: int, report_content: dict) -> str:
 
     """
 
-    account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
+    account = Account(seed=seed, remote_ws=AGENT_NODE_REMOTE_WS)
     liability_manager = Liability(account)
 
     auth = web_3_auth(seed=seed)
