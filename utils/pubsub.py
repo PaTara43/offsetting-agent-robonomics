@@ -1,3 +1,4 @@
+import time
 import typing as tp
 
 from ast import literal_eval
@@ -53,4 +54,5 @@ def pubsub_send(topic: str, data: tp.Any):
     account = Account(remote_ws=AGENT_NODE_REMOTE_WS)
     pubsub = PubSub(account)
     logger.info(f"PubSub connect result: {pubsub.connect(DAPP_NODE_MULTIADDR)}")
+    time.sleep(1)
     logger.info(f"PubSub send result: {pubsub.publish(topic, str(data))}")

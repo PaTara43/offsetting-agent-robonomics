@@ -17,7 +17,7 @@ from utils import (
     burn_carbon_asset,
     add_burn_record,
     report_liability,
-    ROBONOMICS_NODE,
+    AGENT_NODE_REMOTE_WS,
     DOWNLOAD_W3GW,
     pubsub_send,
     LIABILITY_REPORT_TOPIC,
@@ -26,7 +26,7 @@ from utils import (
 logger = logging.getLogger(__name__)
 
 seed = os.getenv("OFFSETTING_AGENT_SEED")
-worker_account = Account(seed=seed, remote_ws=ROBONOMICS_NODE)
+worker_account = Account(seed=seed, remote_ws=AGENT_NODE_REMOTE_WS)
 
 
 def callback_new_liability(data):
