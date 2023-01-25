@@ -11,6 +11,7 @@ import typing as tp
 
 from datetime import date
 from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash, web_3_auth
+from time import time
 
 from utils import (
     get_tokens_to_burn,
@@ -60,7 +61,7 @@ def callback_new_liability(data):
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")
             pubsub_send(
                 topic=LIABILITY_REPORT_TOPIC,
-                data=json.dumps(dict(address=data[3], success=True, report=data[0])),
+                data=json.dumps(dict(address=data[3], success=True, report=data[0], timestamp=time())),
             )
 
         except Exception:
