@@ -14,9 +14,9 @@ from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_
 from time import time
 
 from utils import (
-    get_tokens_to_burn,
+    get_assets_to_burn,
     burn_carbon_asset,
-    add_burn_record,
+    add_compensate_record,
     report_liability,
     AGENT_NODE_REMOTE_WS,
     pubsub_send,
@@ -46,14 +46,14 @@ def callback_new_liability(data):
 
             cid: str = ipfs_32_bytes_to_qm_hash(data[1]["hash"])
             auth = web_3_auth(seed=seed)
-            client = ipfshttpclient2.connect(addr=IPFS_W3GW, auth=auth)
-            technics: tp.Dict[str, tp.Union[float, str]] = client.get_json(cid)
-            tokens_to_burn: float = get_tokens_to_burn(technics["kwh"], technics["geo"])
+            with ipfshttpclient2.connect(addr=IPFS_W3GW, auth=auth) as client:
+                technics: tp.Dict[str, tp.Union[float, str]] = client.get_json(cid)
+            assets_to_burn: float = get_assets_to_burn(technics["kwh"], technics["geo"])
 
-            logger.info(f"Burning tokens {tokens_to_burn}...")
+            logger.info(f"Burning tokens {assets_to_burn}...")
 
-            tr_hash: str = burn_carbon_asset(seed=seed, tokens_to_burn=tokens_to_burn)
-            add_burn_record(address=data[3], date_=date.today(), kwh_burnt=technics["kwh"])
+            tr_hash: str = burn_carbon_asset(seed=seed, assets_to_burn=assets_to_burn)
+            total_compensated: float = add_compensate_record(address=data[3], date_=date.today(), kwh_compensated=technics["kwh"])
             logger.info(f"Reporting burn {tr_hash}")
             report_tr_hash: str = report_liability(
                 seed=seed, index=data[0], report_content=dict(burn_transaction_hash=tr_hash)
@@ -61,7 +61,7 @@ def callback_new_liability(data):
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")
             pubsub_send(
                 topic=LIABILITY_REPORT_TOPIC,
-                data=json.dumps(dict(address=data[3], success=1, report=data[0], timestamp=time())),
+                data=json.dumps(dict(address=data[3], success=1, report=data[0], total=total_compensated, timestamp=time())),
             )
 
         except Exception:

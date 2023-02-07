@@ -1,5 +1,5 @@
 """
-Create a small DB to host burns history.
+Create a small DB to host compensations history.
 
 """
 
@@ -11,12 +11,12 @@ logger = getLogger(__name__)
 
 
 try:
-    sqlite_connection = sqlite3.connect("burns.db")
+    sqlite_connection = sqlite3.connect("compensations.db")
     sqlite_create_table_query = """
-                                CREATE TABLE Burns (
+                                CREATE TABLE Compensations (
                                 Address TEXT PRIMARY KEY UNIQUE,
-                                LastBurnDate DATE,
-                                TotalBurnt FLOAT);
+                                LastCompensationDate DATE,
+                                TotalCompensated FLOAT);
                                 """
 
     cursor = sqlite_connection.cursor()

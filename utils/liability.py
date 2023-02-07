@@ -22,13 +22,13 @@ def create_liability(
     Create liability for an agent ot burn a carbon tokens. Created by agent.
 
     :param seed: Agent seed.
-    :param technics: Burning process data: kWt*h, geotag.
+    :param technics: Compensation process data: kWt*h, geotag.
     :param economics: XRT reward to agent for burning. Paid by promisee.
     :param promisee: Promisee ss58_address.
     :param promisee_signature: Promisee technics and economics signed message.
     :param promisee_signature_crypto_type: Promisee signature crypto type
 
-    :return: liability index and transaction hash.
+    :return: Liability index and transaction hash.
 
     """
     account = Account(seed=seed, remote_ws=AGENT_NODE_REMOTE_WS)

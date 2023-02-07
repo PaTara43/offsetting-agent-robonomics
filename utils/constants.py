@@ -18,12 +18,12 @@ CARBON_ASSET_DECIMAL = 9
 AGENT_NODE_REMOTE_WS = "wss://robonomics.rpc.multi-agent.io/"
 DAPP_NODE_MULTIADDR = "/dns/kusama.rpc.robonomics.network/tcp/44440"
 
-LAST_BURN_DATE_QUERY_TOPIC = "last_burn_date_query"
-LAST_BURN_DATE_RESPONSE_TOPIC = "last_burn_date_response"
+LAST_COMPENSATION_DATE_QUERY_TOPIC = "last_compensation_date_query"
+LAST_COMPENSATION_DATE_RESPONSE_TOPIC = "last_compensation_date_response"
 LIABILITY_QUERY_TOPIC = "liability_query"
 LIABILITY_REPORT_TOPIC = "liability_report"
 
-SQLITE_DB_PATH = path.join(path.abspath(path.dirname(__file__)), "..", "db", "burns.db")
+SQLITE_DB_PATH = path.join(path.abspath(path.dirname(__file__)), "..", "db", "compensations.db")
 
 CO2_INTENSITY_TABLE_PATH = path.join(
     path.abspath(path.dirname(__file__)), "..", "co2_intensity", "carbon-intensity-electricity-01-09-2022_cropped.csv"

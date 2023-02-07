@@ -15,14 +15,14 @@ from .substrate_utils import create_keypair, create_instance
 logger = getLogger(__name__)
 
 
-def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
+def burn_carbon_asset(seed: str, assets_to_burn: float) -> str:
     """
-    Burn carbon assets in IPCS Substrate network.
+    Burn carbon assets in Statemine Substrate network.
 
     :param seed: Offsetting agent account seed in any form.
-    :param tokens_to_burn: Number of tokens to burn.
+    :param assets_to_burn: Number of assets to burn.
 
-    :return: transaction hash.
+    :return: Transaction hash.
 
     """
 
@@ -33,7 +33,7 @@ def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
         call_module="Assets",
         call_function="burn",
         call_params=dict(
-            id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=tokens_to_burn * 10**CARBON_ASSET_DECIMAL
+            id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=assets_to_burn * 10 ** CARBON_ASSET_DECIMAL
         ),
     )
 
@@ -43,26 +43,29 @@ def burn_carbon_asset(seed: str, tokens_to_burn: float) -> str:
     return receipt.extrinsic_hash
 
 
-def add_burn_record(address: str, date_: date, kwh_burnt: float):
+def add_compensate_record(address: str, date_: date, kwh_compensated: float) -> float:
     """
-    Update DB record of committed burns.
+    Update DB record of committed compensation.
 
     :param address: Liability promisee address.
     :param date_: Date when the tokens were burnt.
-    :param kwh_burnt: How much kWt*h were burnt.
+    :param kwh_compensated: How much kWt*h were compensated.
 
+    :return: Total amount of kWh compensated.
     """
 
-    logger.info(f"Adding new burn record to the table.")
+    logger.info(f"Adding new compensation record to the table.")
 
-    response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
+    response: list = sql_query(f"SELECT TotalCompensated from Compensations where Address = '{address}'")
     if not response:
-        logger.info("Adding new address to burns history.")
-        sql_query(f"INSERT INTO Burns VALUES ('{address}', '{date_}', {kwh_burnt})")
+        logger.info("Adding new address to compensations history.")
+        sql_query(f"INSERT INTO Compensations VALUES ('{address}', '{date_}', {kwh_compensated})")
+        return kwh_compensated
     else:
         logger.info(f"Adding new data to the existing address {address}.")
-        sql_query(f"DELETE FROM Burns WHERE Address='{address}'")
+        sql_query(f"DELETE FROM Compensations WHERE Address='{address}'")
         sql_query(
-            f"INSERT INTO Burns (Address, LastBurnDate, TotalBurnt) VALUES ('{address}', '{date_}', "
-            f"'{response[0][0] + kwh_burnt}')"
+            f"INSERT INTO Compensations (Address, LastCompensationDate, TotalCompensated) VALUES ('{address}', '{date_}', "
+            f"'{response[0][0] + kwh_compensated}')"
         )
+        return response[0][0] + kwh_compensated

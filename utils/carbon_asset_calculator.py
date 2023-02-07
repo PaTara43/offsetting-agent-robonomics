@@ -16,21 +16,21 @@ from .db_utils import sql_query
 logger = getLogger(__name__)
 
 
-def get_last_burn_date(address: str) -> tp.Union[date, str]:
+def get_last_compensation_date(address: str) -> tp.Union[date, str]:
     """
     Get the date of a last token burn for an account.
 
     :param address: Account to check.
 
-    :return: Date of last burn. None if no burns.
+    :return: Date of last compensation. None if no compensations.
 
     """
 
-    logger.info(f"SQL query to get LastBurnDate for address '{address}'")
-    response: list = sql_query(f"SELECT LastBurnDate from Burns where Address = '{address}'")
+    logger.info(f"SQL query to get LastCompensationDate for address '{address}'")
+    response: list = sql_query(f"SELECT LastCompensationDate from Compensations where Address = '{address}'")
 
     if not response:
-        logger.info(f"No burns were made for {address}.")
+        logger.info(f"No compensations were made for {address}.")
         return "None"
     else:
         date_list: list = list(map(int, str(response[0][0]).split("-")))
@@ -39,28 +39,28 @@ def get_last_burn_date(address: str) -> tp.Union[date, str]:
         return str(date_)
 
 
-def get_kwh_to_burn(address: str, kwh_current: float) -> float:
+def get_kwh_to_compensate(address: str, kwh_current: float) -> float:
     """
-    Get a number of kWt*h to burn given the record of burns.
+    Get a number of kWt*h to compensate given the record of compensations.
 
     :param address: Account to check.
     :param kwh_current: Current account kWt*h
 
-    :return: Number of kWt*h to burn this time.
+    :return: Number of kWt*h to compensate this time.
 
     """
 
-    logger.info(f"SQL query to get TotalBurnt amount for address '{address}'")
-    response: list = sql_query(f"SELECT TotalBurnt from Burns where Address = '{address}'")
+    logger.info(f"SQL query to get TotalCompensated amount for address '{address}'")
+    response: list = sql_query(f"SELECT TotalCompensated from Compensations where Address = '{address}'")
     if not response:
-        logger.info(f"No burns were made for {address}.")
+        logger.info(f"No compensations were made for {address}.")
         return kwh_current
     else:
-        logger.info(f"kWt*h totally burnt: {response[0][0]}")
+        logger.info(f"kWt*h totally compensated: {response[0][0]}")
         return kwh_current - response[0][0]
 
 
-def get_tokens_to_burn(kwh: float, geo: str) -> float:
+def get_assets_to_burn(kwh: float, geo: str) -> float:
     """
     Get an amount of carbon assets to burn based on a number of kWt*h burnt and country of residence.
         Source:

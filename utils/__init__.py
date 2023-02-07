@@ -3,11 +3,11 @@ Create an utils package.
 
 """
 
-from .carbon_asset_burner import burn_carbon_asset, add_burn_record
-from .carbon_asset_calculator import get_last_burn_date, get_kwh_to_burn, get_tokens_to_burn
+from .carbon_asset_burner import burn_carbon_asset, add_compensate_record
+from .carbon_asset_calculator import get_last_compensation_date, get_kwh_to_compensate, get_assets_to_burn
 from .constants import (
-    LAST_BURN_DATE_QUERY_TOPIC,
-    LAST_BURN_DATE_RESPONSE_TOPIC,
+    LAST_COMPENSATION_DATE_QUERY_TOPIC,
+    LAST_COMPENSATION_DATE_RESPONSE_TOPIC,
     LIABILITY_QUERY_TOPIC,
     LIABILITY_REPORT_TOPIC,
     IPFS_W3GW,

@@ -31,7 +31,7 @@ def callback_liability(obj, update_nr, subscription_id):
     try:
 
         income_data: tp.Dict[str, tp.Union[str, int, dict]] = parse_income_message(obj["params"]["result"]["data"])
-        logger.info(f"Got request for burning carbon assets: {income_data}")
+        logger.info(f"Got request for kWh offsetting: {income_data}")
         logger.info(f"Creating liability...")
         promisee_signature_crypto_type: str = list(income_data["promisee_signature"].keys())[0]
         index, tr_hash = create_liability(
