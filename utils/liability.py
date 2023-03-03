@@ -3,10 +3,11 @@ Tool for creating and reporting liabilities in Robonomics Network.
 
 """
 
-import ipfshttpclient2
 import typing as tp
 
+import ipfshttpclient2
 from robonomicsinterface import Account, Liability, web_3_auth
+
 from .constants import AGENT_NODE_REMOTE_WS, IPFS_W3GW
 
 

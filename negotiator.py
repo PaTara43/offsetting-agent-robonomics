@@ -7,18 +7,17 @@ import json
 import logging
 import traceback
 import typing as tp
-
 from datetime import date
 from time import time
 
 from utils import (
-    pubsub_subscribe,
-    parse_income_message,
-    pubsub_send,
-    get_last_compensation_date,
-    get_kwh_to_compensate,
     LAST_COMPENSATION_DATE_QUERY_TOPIC,
     LAST_COMPENSATION_DATE_RESPONSE_TOPIC,
+    get_kwh_to_compensate,
+    get_last_compensation_date,
+    parse_income_message,
+    pubsub_send,
+    pubsub_subscribe,
 )
 
 logger = logging.getLogger(__name__)
@@ -45,7 +44,10 @@ def callback_negotiations(obj, update_nr, subscription_id):
         logger.info("Sending response to the DApp")
         outcome_data: str = json.dumps(
             dict(
-                address=income_data["address"], last_compensation_date=last_compensation_date, kwh_to_compensate=kwh_to_compensate, timestamp=time()
+                address=income_data["address"],
+                last_compensation_date=last_compensation_date,
+                kwh_to_compensate=kwh_to_compensate,
+                timestamp=time(),
             )
         )
         pubsub_send(LAST_COMPENSATION_DATE_RESPONSE_TOPIC, outcome_data)

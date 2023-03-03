@@ -8,8 +8,7 @@ import os
 import traceback
 import typing as tp
 
-
-from utils import pubsub_subscribe, parse_income_message, create_liability, LIABILITY_QUERY_TOPIC
+from utils import LIABILITY_QUERY_TOPIC, create_liability, parse_income_message, pubsub_subscribe
 
 logger = logging.getLogger(__name__)
 

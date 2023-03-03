@@ -4,7 +4,6 @@ Create a small DB to host compensations history.
 """
 
 import sqlite3
-
 from logging import getLogger
 
 logger = getLogger(__name__)

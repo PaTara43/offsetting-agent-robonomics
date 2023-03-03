@@ -1,8 +1,8 @@
 import time
 import typing as tp
-
 from ast import literal_eval
 from logging import getLogger
+
 from robonomicsinterface import Account, PubSub
 
 from .constants import AGENT_NODE_REMOTE_WS, DAPP_NODE_MULTIADDR

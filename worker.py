@@ -2,26 +2,26 @@
 This module catches income liabilities and burns tokens once Liability created. Then reports.
 
 """
-import ipfshttpclient2
 import json
 import logging
 import os
 import traceback
 import typing as tp
-
 from datetime import date
-from robonomicsinterface import Account, Subscriber, SubEvent, ipfs_32_bytes_to_qm_hash, web_3_auth
 from time import time
 
+import ipfshttpclient2
+from robonomicsinterface import Account, SubEvent, Subscriber, ipfs_32_bytes_to_qm_hash, web_3_auth
+
 from utils import (
-    get_assets_to_burn,
-    burn_carbon_asset,
-    add_compensate_record,
-    report_liability,
     AGENT_NODE_REMOTE_WS,
-    pubsub_send,
-    LIABILITY_REPORT_TOPIC,
     IPFS_W3GW,
+    LIABILITY_REPORT_TOPIC,
+    add_compensate_record,
+    burn_carbon_asset,
+    get_assets_to_burn,
+    pubsub_send,
+    report_liability,
 )
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,9 @@ def callback_new_liability(data):
             logger.info(f"Burning tokens {assets_to_burn}...")
 
             tr_hash: str = burn_carbon_asset(seed=seed, assets_to_burn=assets_to_burn)
-            total_compensated: float = add_compensate_record(address=data[3], date_=date.today(), kwh_compensated=technics["kwh"])
+            total_compensated: float = add_compensate_record(
+                address=data[3], date_=date.today(), kwh_compensated=technics["kwh"]
+            )
             logger.info(f"Reporting burn {tr_hash}")
             report_tr_hash: str = report_liability(
                 seed=seed, index=data[0], report_content=dict(burn_transaction_hash=tr_hash)
@@ -61,7 +63,9 @@ def callback_new_liability(data):
             logger.info(f"Reported liability {data[0]} at {report_tr_hash}")
             pubsub_send(
                 topic=LIABILITY_REPORT_TOPIC,
-                data=json.dumps(dict(address=data[3], success=1, report=data[0], total=total_compensated, timestamp=time())),
+                data=json.dumps(
+                    dict(address=data[3], success=1, report=data[0], total=total_compensated, timestamp=time())
+                ),
             )
 
         except Exception:

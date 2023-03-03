@@ -9,10 +9,9 @@ Robonomics node launch for dev tests:
 
 from os import path
 
-
-STATEMINE_SS58_ADDRESS_TYPE = 2
-STATEMINE_REMOTE_WS = "wss://statemine-rpc.polkadot.io"
-CARBON_ASSET_ID = 2050
+IPCI_SS58_ADDRESS_TYPE = 32
+IPCI_REMOTE_WS = "wss://kusama.rpc.ipci.io"
+CARBON_ASSET_ID = "0xcbf2d1c28581201dc468e312fd44413e0000000000000065"
 CARBON_ASSET_DECIMAL = 9
 
 AGENT_NODE_REMOTE_WS = "wss://robonomics.rpc.multi-agent.io/"

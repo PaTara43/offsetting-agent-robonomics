@@ -5,7 +5,6 @@ SQL DB interaction via SQLite.
 
 import sqlite3
 import typing as tp
-
 from logging import getLogger
 
 from .constants import SQLITE_DB_PATH

@@ -5,19 +5,20 @@ This file contains functions to burn carbon assets in IPCI network and update bu
 
 from datetime import date
 from logging import getLogger
-from scalecodec.types import GenericCall, GenericExtrinsic
-from substrateinterface import SubstrateInterface, Keypair, ExtrinsicReceipt
 
+from scalecodec.types import GenericCall, GenericExtrinsic
+from substrateinterface import ExtrinsicReceipt, Keypair, SubstrateInterface
+
+from .constants import CARBON_ASSET_DECIMAL, CARBON_ASSET_ID
 from .db_utils import sql_query
-from .constants import CARBON_ASSET_ID, CARBON_ASSET_DECIMAL
-from .substrate_utils import create_keypair, create_instance
+from .substrate_utils import create_instance, create_keypair
 
 logger = getLogger(__name__)
 
 
 def burn_carbon_asset(seed: str, assets_to_burn: float) -> str:
     """
-    Burn carbon assets in Statemine Substrate network.
+    Burn carbon assets in IPCI Substrate network.
 
     :param seed: Offsetting agent account seed in any form.
     :param assets_to_burn: Number of assets to burn.
@@ -30,15 +31,15 @@ def burn_carbon_asset(seed: str, assets_to_burn: float) -> str:
     interface: SubstrateInterface = create_instance()
 
     call: GenericCall = interface.compose_call(
-        call_module="Assets",
-        call_function="burn",
-        call_params=dict(
-            id=CARBON_ASSET_ID, who={"Id": keypair.ss58_address}, amount=assets_to_burn * 10 ** CARBON_ASSET_DECIMAL
-        ),
+        call_module="CarbonAssets",
+        call_function="self_burn",
+        call_params=dict(id=CARBON_ASSET_ID, amount=assets_to_burn * 10**CARBON_ASSET_DECIMAL),
     )
 
     signed_extrinsic: GenericExtrinsic = interface.create_signed_extrinsic(call=call, keypair=keypair)
     receipt: ExtrinsicReceipt = interface.submit_extrinsic(signed_extrinsic, wait_for_finalization=True)
+    if not receipt.is_success:
+        raise Exception(f"Extrinsic failed: {receipt.error_message}")
 
     return receipt.extrinsic_hash
 
